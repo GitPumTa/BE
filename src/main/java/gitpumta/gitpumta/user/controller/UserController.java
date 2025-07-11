@@ -8,7 +8,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/auth")
+@RequestMapping(value = "/user")
 @CrossOrigin
 public class UserController {
     private final UserService userService;
@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/get")
-    public ResponseEntity<Map<String, Object>> getUser(@RequestParam GetUserRequestDTO getUserRequestDTO) {
+    public ResponseEntity<Map<String, Object>> getUser(@RequestBody GetUserRequestDTO getUserRequestDTO) {
         GetUserResponseDTO getUserResponseDTO = userService.getUser(getUserRequestDTO);
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("is_success", getUserResponseDTO != null);
