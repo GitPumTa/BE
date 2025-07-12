@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Data
 public class CreateGroupRequestDTO {
-//    private UUID id;
+    private UUID id;
 
     private String name;
 
