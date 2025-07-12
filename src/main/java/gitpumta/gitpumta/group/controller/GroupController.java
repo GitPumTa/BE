@@ -24,6 +24,7 @@ public class GroupController {
         this.builder = builder;
     }
 
+    // 그룹 생성
     @PostMapping(value = "/create")
     public ResponseEntity<Map<String, Object>> createGroup(@RequestBody CreateGroupRequestDTO createGroupRequestDTO) {
         UUID id = groupService.createGroup(createGroupRequestDTO);
@@ -34,8 +35,15 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
 
+    // 그룹 목록 조회
     @GetMapping(value = "/list")
     public ResponseEntity<?> getGroupList() {
         return ResponseEntity.ok(groupService.getAllGroups());
+    }
+
+    // 그룹 검색
+    @GetMapping("/search")
+    public ResponseEntity<?> searchGroups(@RequestParam("keyword") String keyword) {
+        return ResponseEntity.ok(groupService.searchGroups(keyword));
     }
 }
