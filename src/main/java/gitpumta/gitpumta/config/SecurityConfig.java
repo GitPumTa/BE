@@ -13,7 +13,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // CSRF 비활성화 (테스트 시)
+                .csrf(csrf -> csrf.disable()) // CSRF 비활성화 (테스트 시) -> 람다 문법으로 수정
                 .authorizeHttpRequests((authz) -> authz
                         .anyRequest().permitAll()
                 );

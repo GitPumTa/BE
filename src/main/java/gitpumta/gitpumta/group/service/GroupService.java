@@ -44,4 +44,17 @@ public class GroupService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    // 그룹명 또는 설명에 사용자가 입력한 키워드를 포함하는 그룹 검색
+    public List<GroupResponseDTO> searchGroups(String keyword) {
+        return groupRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndDeletedAtIsNull(keyword, keyword)
+                .stream()
+                .map(group -> GroupResponseDTO.builder()
+                        .id(group.getId())
+                        .name(group.getName())
+                        .description(group.getDescription())
+                        .capacity(group.getCapacity())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }

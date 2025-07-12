@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface GroupDAORepository extends JpaRepository<GroupDAO, UUID> {
     List<GroupDAO> findByDeletedAtIsNull();
+    List<GroupDAO> findByNameContainingAndDeletedAtIsNull(String keyword);
+    List<GroupDAO> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndDeletedAtIsNull(String name, String description);
 }
