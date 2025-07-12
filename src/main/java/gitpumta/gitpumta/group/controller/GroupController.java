@@ -33,4 +33,9 @@ public class GroupController {
 
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
+
+    @GetMapping(value = "/list")
+    public ResponseEntity<?> getGroupList() {
+        return ResponseEntity.ok(groupService.getAllGroups());
+    }
 }

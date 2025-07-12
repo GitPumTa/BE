@@ -6,6 +6,11 @@ import gitpumta.gitpumta.group.domain.dto.CreateGroupRequestDTO;
 import gitpumta.gitpumta.group.repository.GroupDAORepository;
 import org.springframework.stereotype.Service;
 
+// 그룹 조회 목록 기능 import
+import gitpumta.gitpumta.group.domain.dto.GroupResponseDTO;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -25,5 +30,18 @@ public class GroupService {
         groupDAO.setCreatedAt(LocalDateTime.now());
         groupRepository.save(groupDAO);
         return groupDAO.getId();
+    }
+
+    // 그룹 목록 조회 메소드
+    public List<GroupResponseDTO> getAllGroups() {
+        return groupRepository.findByDeletedAtIsNull()
+                .stream()
+                .map(group -> GroupResponseDTO.builder()
+                        .id(group.getId())
+                        .name(group.getName())
+                        .description(group.getDescription())
+                        .capacity(group.getCapacity())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
