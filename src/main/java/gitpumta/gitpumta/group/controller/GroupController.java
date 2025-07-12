@@ -29,7 +29,7 @@ public class GroupController {
         UUID id = groupService.createGroup(createGroupRequestDTO);
         Map<String,Object> requestMap = new HashMap<>();
         requestMap.put("id", id);
-        requestMap.put("message", id == null? "그룹 생성 성공" : "그룹 생성 실패");
+        requestMap.put("message", id != null? "그룹 생성 성공" : "그룹 생성 실패");
 
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
