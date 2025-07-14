@@ -2,6 +2,8 @@ package gitpumta.gitpumta.timer.service;
 
 import gitpumta.gitpumta.timer.bean.StartTimerBean;
 import gitpumta.gitpumta.timer.bean.StopTimerBean;
+import gitpumta.gitpumta.timer.domain.dto.GetMemberTimersRequestDTO;
+import gitpumta.gitpumta.timer.domain.dto.GetMemberTimersResponseDTO;
 import gitpumta.gitpumta.timer.domain.dto.StartTimerRequestDTO;
 import gitpumta.gitpumta.timer.domain.dto.StopTimerRequestDTO;
 import org.springframework.stereotype.Service;
@@ -29,4 +31,9 @@ public class TimerService {
             throw new IllegalArgumentException("Status값이 잘못되었습니다: " + status);
         }
     }
+/*
+    public GetMemberTimersResponseDTO GetMemberTimers(GetMemberTimersRequestDTO getMemberTimersRequestDTO) {
+        // 빈 받아와서 서비스 구현
+    }
+ */
 }

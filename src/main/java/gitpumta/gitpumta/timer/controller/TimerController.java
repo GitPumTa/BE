@@ -44,6 +44,13 @@ public class TimerController {
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
         }
+    }
+/*
+    // url 매핑
+    @GetMapping(value = "/")
+    public ResponseEntity<Map<String, Object>> getTimers() {
 
     }
+
+ */
 }

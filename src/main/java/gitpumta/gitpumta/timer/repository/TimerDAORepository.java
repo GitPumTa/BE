@@ -17,4 +17,6 @@ public interface TimerDAORepository extends JpaRepository<TimerDAO, UUID> {
             UUID userId, UUID plannerId, LocalDateTime start, LocalDateTime end);
 
     List<TimerDAO> findAllByStatus(String status);
+
+    // 로직에 필요한 쿼리 작성
 }
