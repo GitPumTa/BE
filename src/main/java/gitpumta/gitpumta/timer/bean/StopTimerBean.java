@@ -30,7 +30,7 @@ public class StopTimerBean {
                         userId, plannerId, startOfDay, endOfDay)
                 .orElseThrow(() -> new IllegalStateException("정지할 타이머가 없습니다."));
 
-        long duration = ChronoUnit.MINUTES.between(timer.getUpdatedAt(), now);
+        long duration = ChronoUnit.SECONDS.between(timer.getUpdatedAt(), now);
 
         timer.setTime(timer.getTime() + (int)duration);
         timer.setUpdatedAt(now);
