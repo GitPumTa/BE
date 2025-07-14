@@ -22,10 +22,14 @@ public class StopTimerBean {
         UUID plannerId = stopTimerRequestDTO.getPlannerId();
         String status = stopTimerRequestDTO.getStatus();
 
-        TimerDAO timer = timerDAORepository.findByUserIdAndPlannerIdAndDeletedAtIsNull(userId, plannerId)
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startOfDay = now.toLocalDate().atStartOfDay(); // 해당 날짜 00시 00분
+        LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1); // 해당 날짜 23시 59분
+
+        TimerDAO timer = timerDAORepository.findByUserIdAndPlannerIdAndDeletedAtIsNullAndCreatedAtBetween(
+                        userId, plannerId, startOfDay, endOfDay)
                 .orElseThrow(() -> new IllegalStateException("정지할 타이머가 없습니다."));
 
-        LocalDateTime now = LocalDateTime.now();
         long duration = ChronoUnit.MINUTES.between(timer.getUpdatedAt(), now);
 
         timer.setTime(timer.getTime() + (int)duration);

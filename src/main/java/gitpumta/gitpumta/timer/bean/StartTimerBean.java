@@ -20,7 +20,11 @@ public class StartTimerBean {
         UUID plannerId = startTimerRequestDTO.getPlannerId();
         LocalDateTime now = LocalDateTime.now();
 
-        TimerDAO timer = timerDAORepository.findByUserIdAndPlannerIdAndDeletedAtIsNull(userId, plannerId)
+        LocalDateTime startOfDay = now.toLocalDate().atStartOfDay(); // 해당 날짜 00시 00분
+        LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1); // 해당 날짜 23시 59분
+
+        TimerDAO timer = timerDAORepository.findByUserIdAndPlannerIdAndDeletedAtIsNullAndCreatedAtBetween(
+                        userId, plannerId, startOfDay, endOfDay)
                         .map(existing -> {
                             existing.setStatus("1");
                             existing.setUpdatedAt(now);

@@ -23,7 +23,7 @@ public class TimerService {
     public void StopTimer(StopTimerRequestDTO stopTimerRequestDTO) {
         String status = stopTimerRequestDTO.getStatus();
 
-        if ("0".equals(status) || "1".equals(status)) {
+        if ("0".equals(status) || "-1".equals(status)) {
             stopTimerBean.exec(stopTimerRequestDTO);
         } else {
             throw new IllegalArgumentException("Status값이 잘못되었습니다: " + status);
