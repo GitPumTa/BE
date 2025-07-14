@@ -46,4 +46,6 @@ public class GroupController {
     public ResponseEntity<?> searchGroups(@RequestParam("keyword") String keyword) {
         return ResponseEntity.ok(groupService.searchGroups(keyword));
     }
+
+    // 그룹 상세 정보 조회
 }
