@@ -18,6 +18,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/Main/timer/**").permitAll() // 임시 우회용 코드
                         .anyRequest().authenticated()
                 );
         return http.build();
