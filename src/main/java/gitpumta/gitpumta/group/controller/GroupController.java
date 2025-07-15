@@ -39,13 +39,31 @@ public class GroupController {
 
     // 그룹 목록 조회
     @GetMapping(value = "/list")
-    public ResponseEntity<List<GroupListDTO>> getGroupList() {
-        return ResponseEntity.ok(groupService.getAllGroups());
+    public ResponseEntity<Map<String, Object>> getGroupList() {
+        List<GroupListDTO> groupList = groupService.getAllGroups();
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", groupList);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     // 그룹 검색
-    @GetMapping("/search")
-    public ResponseEntity<?> searchGroups(@RequestParam("keyword") String keyword) {
-        return ResponseEntity.ok(groupService.searchGroups(keyword));
+    @GetMapping(value = "/search")
+    public ResponseEntity<Map<String, Object>> searchGroups(@RequestParam("keyword") String keyword) {
+        List<GroupResponseDTO> matchGroups = groupService.searchGroups(keyword);
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", matchGroups);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    // 득정 그룹 상세 정보 조회
+    @GetMapping(value = "/detail")
+    public ResponseEntity<Map<String, Object>> getGroupDetail(@RequestParam UUID groupId) {
+        GroupResponseDTO groupResponseDTO = groupService.getGroupDetail(groupId);
+        Map<String,Object> requestMap = new HashMap<>();
+        requestMap.put("group",groupResponseDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
 }

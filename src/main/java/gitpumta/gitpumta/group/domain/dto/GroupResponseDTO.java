@@ -1,15 +1,12 @@
 package gitpumta.gitpumta.group.domain.dto;
 
-import lombok.Data;
-
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.*;
 
 import java.util.UUID;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,8 +14,9 @@ import java.util.List;
 // 그룹 상세 목록 조회
 public class GroupResponseDTO {
     private UUID id;
-    private String name;
-    private List<String> rule;
-    private String description;
-    private Integer capacity;
+    private String name; // 그룹명
+    private List<String> rule; // 그룹 규칙
+    private String description; // 그룹 설명
+    private Integer capacity; // 그룹 가입 정원
+    private Integer memberCnt; // 현재 가입 인원
 }

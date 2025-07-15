@@ -14,7 +14,7 @@ import java.util.*;
 @Entity
 public class GroupDAO {
     @Id
-    @Column(length = 36)
+    @Column(name = "id", columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column(nullable = false, length = 100)

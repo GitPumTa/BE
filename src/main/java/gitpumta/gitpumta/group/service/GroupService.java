@@ -61,4 +61,21 @@ public class GroupService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    // 그룹 상세 정보 조회
+    public GroupResponseDTO getGroupDetail(UUID groupId) {
+        GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID 그룹"));
+
+        int memberCnt = 0;
+
+        return GroupResponseDTO.builder()
+                .id(group.getId())
+                .name(group.getName())
+                .description(group.getDescription())
+                .capacity(group.getCapacity())
+                .rule(group.getRule())
+                .memberCnt(memberCnt)
+                .build();
+    }
 }
