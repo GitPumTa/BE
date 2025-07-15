@@ -5,12 +5,15 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 import java.util.UUID;
+import java.util.List;
 
 @Data
 public class CreateGroupRequestDTO {
 //    private UUID id;
 
     private String name;
+
+    private List<String> rule;
 
     private String password;
 
