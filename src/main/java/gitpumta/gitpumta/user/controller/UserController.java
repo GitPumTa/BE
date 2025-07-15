@@ -1,8 +1,9 @@
 package gitpumta.gitpumta.user.controller;
 import java.util.*;
 
-import gitpumta.gitpumta.user.domain.dto.GetUserRequestDTO;
-import gitpumta.gitpumta.user.domain.dto.GetUserResponseDTO;
+import gitpumta.gitpumta.user.domain.UserDAO;
+import gitpumta.gitpumta.user.domain.dto.LoginUserRequestDTO;
+import gitpumta.gitpumta.user.domain.dto.SignUpUserDTO;
 import gitpumta.gitpumta.user.service.UserService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +26,22 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
 
-    @GetMapping(value = "/get")
-    public ResponseEntity<Map<String, Object>> getUser(@RequestBody GetUserRequestDTO getUserRequestDTO) {
-        GetUserResponseDTO getUserResponseDTO = userService.getUser(getUserRequestDTO);
-        Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("is_success", getUserResponseDTO != null);
-        requestMap.put("message", getUserResponseDTO != null ? "유저 정보 반환 성공. " : "유저 정보 반환 실패. ");
-        requestMap.put("user", getUserResponseDTO);
+    @PostMapping(value = "/login")
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginUserRequestDTO loginUserRequestDTO){
+        UserDAO userDAO = userService.login(loginUserRequestDTO);
+        Map<String,Object> requestMap = new HashMap<>();
+        requestMap.put("is_success", userDAO!=null? "로그인 성공":"로그인 실패");
+        requestMap.put("id", userDAO!=null? userDAO.getId(): "");
+        return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+    }
 
+    @PostMapping(value = "/signup")
+    public ResponseEntity<Map<String, Object>> signup(@RequestBody SignUpUserDTO signUpUserDTO){
+        UserDAO userDAO = userService.signup(signUpUserDTO);
+
+        Map<String,Object> requestMap = new HashMap<>();
+        requestMap.put("is_success", userDAO!=null? "회원가입 성공":"회원가입 실패");
+        requestMap.put("id", userDAO!=null? userDAO.getId(): "");
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
 }
