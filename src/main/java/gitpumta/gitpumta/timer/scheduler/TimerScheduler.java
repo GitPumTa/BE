@@ -13,7 +13,7 @@ import java.util.UUID;
 // 00시 기준 타이머 초기화 로직
 @Component
 @RequiredArgsConstructor
-public class TimerScheduler {
+public class TimerScheduler {/*
     private final TimerDAORepository timerDAORepository;
 
     // 00시
@@ -44,5 +44,5 @@ public class TimerScheduler {
 
             timerDAORepository.save(newTimer);
         }
-    }
+    }*/
 }

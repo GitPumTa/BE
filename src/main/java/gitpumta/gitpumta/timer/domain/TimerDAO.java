@@ -21,6 +21,28 @@ public class TimerDAO {
     @Column(name = "user_id",nullable = false)
     private UUID userId;
 
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "total_duration")
+    private int totalDuration;
+
+    @Column
+    private String status;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    /*
+    @Id
+    private UUID id;
+
+    @Column(name = "user_id",nullable = false)
+    private UUID userId;
+
     @Column(name = "planner_id", nullable = false)
     private UUID plannerId;
 
@@ -41,4 +63,5 @@ public class TimerDAO {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+     */
 }

@@ -2,11 +2,11 @@ package gitpumta.gitpumta.timer.service;
 
 import gitpumta.gitpumta.timer.bean.StartTimerBean;
 import gitpumta.gitpumta.timer.bean.StopTimerBean;
-import gitpumta.gitpumta.timer.domain.dto.GetMemberTimersRequestDTO;
-import gitpumta.gitpumta.timer.domain.dto.GetMemberTimersResponseDTO;
-import gitpumta.gitpumta.timer.domain.dto.StartTimerRequestDTO;
-import gitpumta.gitpumta.timer.domain.dto.StopTimerRequestDTO;
+import gitpumta.gitpumta.timer.domain.dto.*;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class TimerService {
@@ -18,6 +18,16 @@ public class TimerService {
         this.stopTimerBean = stopTimerBean;
     }
 
+    public LocalDateTime startTimer(UUID accountId, TimerRequestDTO timerRequestDTO) {
+        startTimerBean.exec(accountId, timerRequestDTO);
+        return timerRequestDTO.getSend_at();
+    }
+
+    public LocalDateTime stopTimer(UUID accountId, TimerRequestDTO timerRequestDTO) {
+        stopTimerBean.exec(accountId, timerRequestDTO);
+        return timerRequestDTO.getSend_at();
+    }
+/*
     public void StartTimer(StartTimerRequestDTO startTimerRequestDTO) {
         startTimerBean.exec(startTimerRequestDTO);
     }
@@ -31,6 +41,8 @@ public class TimerService {
             throw new IllegalArgumentException("Status값이 잘못되었습니다: " + status);
         }
     }
+
+ */
 /*
     public GetMemberTimersResponseDTO GetMemberTimers(GetMemberTimersRequestDTO getMemberTimersRequestDTO) {
         // 빈 받아와서 서비스 구현

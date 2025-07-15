@@ -13,8 +13,11 @@ import java.util.UUID;
 public interface TimerDAORepository extends JpaRepository<TimerDAO, UUID> {
     //List<TimerDAO> findAllByUserId(UUID userId);
 
-    Optional<TimerDAO> findByUserIdAndPlannerIdAndDeletedAtIsNullAndCreatedAtBetween(
-            UUID userId, UUID plannerId, LocalDateTime start, LocalDateTime end);
+    //Optional<TimerDAO> findByUserIdAndPlannerIdAndDeletedAtIsNullAndCreatedAtBetween(
+            //UUID userId, UUID plannerId, LocalDateTime start, LocalDateTime end);
+
+    Optional<TimerDAO> findByUserIdAndDeletedAtIsNullAndCreatedAtBetween(
+            UUID userId, LocalDateTime start, LocalDateTime end);
 
     List<TimerDAO> findAllByStatus(String status);
 
