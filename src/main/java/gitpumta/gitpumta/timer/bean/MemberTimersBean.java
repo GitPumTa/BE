@@ -37,7 +37,7 @@ public class MemberTimersBean {
 
     // 그룹 내 나의 랭킹 계산 -> 그룹 테이블 + 타이머 테이블 조인
     public int getMyRank(UUID accountId, UUID groupId) {
-        return null;
+        return 0;
     }
 
     // 내 이름 가져오기 -> 유저 테이블 참조
