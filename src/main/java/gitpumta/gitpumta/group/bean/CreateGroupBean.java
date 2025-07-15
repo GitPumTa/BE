@@ -15,12 +15,13 @@ public class CreateGroupBean {
         this.repository = repository;
     }
     public GroupDAO exec(CreateGroupRequestDTO createGroupRequestDTO){
-        return GroupDAO.builder()
+        GroupDAO group = GroupDAO.builder()
                 .id(UUID.randomUUID())
                 .name(createGroupRequestDTO.getName())
                 .password(createGroupRequestDTO.getPassword())
                 .capacity(createGroupRequestDTO.getCapacity())
                 .description(createGroupRequestDTO.getDescription())
                 .build();
+        return repository.save(group);
     }
 }
