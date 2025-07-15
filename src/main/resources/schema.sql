@@ -62,6 +62,7 @@ CREATE TABLE planner (
                          name VARCHAR(100) NOT NULL,
                          description TEXT,
                          repository_link VARCHAR(255),
+                         duration INT,
                          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                          deleted_at DATETIME
@@ -100,10 +101,10 @@ CREATE TABLE commit (
 CREATE TABLE timer (
                        id CHAR(36) NOT NULL PRIMARY KEY,
                        user_id CHAR(36) NOT NULL,
-                       planner_id CHAR(36),
+    -- planner_id CHAR(36),
                        updated_at DATETIME, -- 시작 or 일시정지 시간 기록용
-                       time INT,
-                       session_type VARCHAR(30),
+                       total_duration INT,
+    -- session_type VARCHAR(30),
                        status VARCHAR(20), -- 1은 동작죽, 0은 일시정지, -1은 완전 정지
                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                        deleted_at DATETIME

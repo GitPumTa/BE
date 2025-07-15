@@ -52,32 +52,6 @@ public class TimerController {
         }
     }
 /*
-    @PostMapping(value = "/start")
-    public ResponseEntity<Map<String, Object>> startTimer(@RequestBody StartTimerRequestDTO startTimerRequestDTO) {
-        timerService.StartTimer(startTimerRequestDTO);
-
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("message", "시작 저장 성공");
-
-        return ResponseEntity.status(HttpStatus.OK).body(responseMap);
-    }
-
-    @PostMapping(value = "/stop")
-    public ResponseEntity<Map<String, Object>> stopTimer(@RequestBody StopTimerRequestDTO stopTimerRequestDTO) {
-        try {
-            timerService.StopTimer(stopTimerRequestDTO);
-            Map<String, Object> responseMap = new HashMap<>();
-            responseMap.put("message", stopTimerRequestDTO.getStatus().equals("0") ? "타이머 일시정지 성공" : "타이머 완전정지 성공");
-
-            return ResponseEntity.status(HttpStatus.OK).body(responseMap);
-        } catch (Exception e) {
-            Map<String, Object> responseMap = new HashMap<>();
-            responseMap.put("message", e.getMessage());
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
-        }
-    }
-
     // url 매핑
     @GetMapping(value = "/")
     public ResponseEntity<Map<String, Object>> getTimers() {

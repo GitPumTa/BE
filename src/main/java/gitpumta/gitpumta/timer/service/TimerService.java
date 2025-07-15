@@ -28,22 +28,6 @@ public class TimerService {
         return timerRequestDTO.getSend_at();
     }
 /*
-    public void StartTimer(StartTimerRequestDTO startTimerRequestDTO) {
-        startTimerBean.exec(startTimerRequestDTO);
-    }
-
-    public void StopTimer(StopTimerRequestDTO stopTimerRequestDTO) {
-        String status = stopTimerRequestDTO.getStatus();
-
-        if ("0".equals(status) || "-1".equals(status)) {
-            stopTimerBean.exec(stopTimerRequestDTO);
-        } else {
-            throw new IllegalArgumentException("Status값이 잘못되었습니다: " + status);
-        }
-    }
-
- */
-/*
     public GetMemberTimersResponseDTO GetMemberTimers(GetMemberTimersRequestDTO getMemberTimersRequestDTO) {
         // 빈 받아와서 서비스 구현
     }

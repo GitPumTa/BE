@@ -11,15 +11,9 @@ import java.util.UUID;
 
 @Repository
 public interface TimerDAORepository extends JpaRepository<TimerDAO, UUID> {
-    //List<TimerDAO> findAllByUserId(UUID userId);
-
-    //Optional<TimerDAO> findByUserIdAndPlannerIdAndDeletedAtIsNullAndCreatedAtBetween(
-            //UUID userId, UUID plannerId, LocalDateTime start, LocalDateTime end);
 
     Optional<TimerDAO> findByUserIdAndDeletedAtIsNullAndCreatedAtBetween(
             UUID userId, LocalDateTime start, LocalDateTime end);
 
-    List<TimerDAO> findAllByStatus(String status);
-
-    // 로직에 필요한 쿼리 작성
+    // 멤버 타이머 검색 로직에 필요한 쿼리 작성
 }
