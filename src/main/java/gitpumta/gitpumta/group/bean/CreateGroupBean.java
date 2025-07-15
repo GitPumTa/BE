@@ -18,6 +18,7 @@ public class CreateGroupBean {
         return GroupDAO.builder()
                 .id(UUID.randomUUID())
                 .name(createGroupRequestDTO.getName())
+                .rule(createGroupRequestDTO.getRule())
                 .password(createGroupRequestDTO.getPassword())
                 .capacity(createGroupRequestDTO.getCapacity())
                 .description(createGroupRequestDTO.getDescription())
