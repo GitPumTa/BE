@@ -15,7 +15,7 @@ public class CreateGroupBean {
         this.repository = repository;
     }
     public GroupDAO exec(CreateGroupRequestDTO createGroupRequestDTO){
-        return GroupDAO.builder()
+        GroupDAO group = GroupDAO.builder()
                 .id(UUID.randomUUID())
                 .name(createGroupRequestDTO.getName())
                 .rule(createGroupRequestDTO.getRule())
@@ -23,5 +23,6 @@ public class CreateGroupBean {
                 .capacity(createGroupRequestDTO.getCapacity())
                 .description(createGroupRequestDTO.getDescription())
                 .build();
+        return repository.save(group);
     }
 }
