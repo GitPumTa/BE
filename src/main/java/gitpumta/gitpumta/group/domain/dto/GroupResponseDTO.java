@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 
+// 그룹 상세 목록 조회
 public class GroupResponseDTO {
     private UUID id;
     private String name;

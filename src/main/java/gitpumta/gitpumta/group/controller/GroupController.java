@@ -1,6 +1,7 @@
 package gitpumta.gitpumta.group.controller;
 
 import gitpumta.gitpumta.group.domain.dto.CreateGroupRequestDTO;
+import gitpumta.gitpumta.group.domain.dto.GroupListDTO;
 import gitpumta.gitpumta.group.domain.dto.GroupResponseDTO;
 import gitpumta.gitpumta.group.service.GroupService;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.client.RestClient;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/group")
@@ -37,7 +39,7 @@ public class GroupController {
 
     // 그룹 목록 조회
     @GetMapping(value = "/list")
-    public ResponseEntity<?> getGroupList() {
+    public ResponseEntity<List<GroupListDTO>> getGroupList() {
         return ResponseEntity.ok(groupService.getAllGroups());
     }
 
@@ -46,6 +48,4 @@ public class GroupController {
     public ResponseEntity<?> searchGroups(@RequestParam("keyword") String keyword) {
         return ResponseEntity.ok(groupService.searchGroups(keyword));
     }
-
-    // 그룹 상세 정보 조회
 }

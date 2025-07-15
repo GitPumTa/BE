@@ -4,6 +4,7 @@ import gitpumta.gitpumta.group.bean.CreateGroupBean;
 import gitpumta.gitpumta.group.domain.GroupDAO;
 import gitpumta.gitpumta.group.domain.dto.CreateGroupRequestDTO;
 import gitpumta.gitpumta.group.repository.GroupDAORepository;
+import gitpumta.gitpumta.group.domain.dto.GroupListDTO;
 import org.springframework.stereotype.Service;
 
 // 그룹 조회 목록 기능 import
@@ -34,15 +35,15 @@ public class GroupService {
     }
 
     // 그룹 목록 조회 메소드
-    public List<GroupResponseDTO> getAllGroups() {
+    public List<GroupListDTO> getAllGroups() {
         return groupRepository.findByDeletedAtIsNull()
                 .stream()
-                .map(group -> GroupResponseDTO.builder()
+                .map(group -> GroupListDTO.builder()
                         .id(group.getId())
                         .name(group.getName())
-                        .rule(group.getRule())
                         .description(group.getDescription())
                         .capacity(group.getCapacity())
+                        .memberCnt(0) // 가입 인원은 아직 기능 미구현이므로 0
                         .build())
                 .collect(Collectors.toList());
     }
