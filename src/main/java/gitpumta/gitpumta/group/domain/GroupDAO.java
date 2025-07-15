@@ -1,6 +1,5 @@
 package gitpumta.gitpumta.group.domain;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +36,10 @@ public class GroupDAO {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @Convert(converter = StringListConverter.class)
+    @Column(columnDefinition = "TEXT")
+    private List<String> rule;
 
     // 기본 생성자, getter, setter 생략 (IDE로 자동 생성 권장)
 }

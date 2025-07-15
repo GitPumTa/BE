@@ -25,6 +25,7 @@ public class GroupService {
         this.groupRepository = groupRepository;
     }
 
+    // 그룹 생성
     public UUID createGroup(CreateGroupRequestDTO createGroupRequestDTO) {
         GroupDAO groupDAO = createGroupBean.exec(createGroupRequestDTO);
         groupDAO.setCreatedAt(LocalDateTime.now());
