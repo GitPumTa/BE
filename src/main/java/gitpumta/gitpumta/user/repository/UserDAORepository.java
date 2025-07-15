@@ -10,4 +10,6 @@ import java.util.*;
 @Repository
 public interface UserDAORepository extends JpaRepository<UserDAO, UUID> {
     Optional<UserDAO> findById(UUID userId);
+
+    Optional<UserDAO> findByAccountId(String accountId);
 }
