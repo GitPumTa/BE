@@ -53,6 +53,7 @@ public class GroupService {
                 .map(group -> GroupResponseDTO.builder()
                         .id(group.getId())
                         .name(group.getName())
+                        .rule(group.getRule())
                         .description(group.getDescription())
                         .capacity(group.getCapacity())
                         .build())
