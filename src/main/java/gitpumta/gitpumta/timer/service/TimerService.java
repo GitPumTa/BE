@@ -55,8 +55,8 @@ public class TimerService {
                 memberTimersBean.getMonitoringGroupDescription(groupId));
         memberTimersResponseDTO.setMyRank(memberTimersBean.getMyRank(accountId, groupId));
         memberTimersResponseDTO.setMyName(memberTimersBean.getMyName(accountId));
-        memberTimersResponseDTO.setDurationLeaders(memberTimersBean.getDurationLeaders(accountId,groupId));
-        memberTimersResponseDTO.setCommitLeaders(memberTimersBean.getCommitLeaders(accountId, groupId));
+        memberTimersResponseDTO.setDurationLeaders(memberTimersBean.getDurationLeaders(groupId));
+        memberTimersResponseDTO.setCommitLeaders(memberTimersBean.getCommitLeaders(groupId));
 
         return memberTimersResponseDTO;
     }

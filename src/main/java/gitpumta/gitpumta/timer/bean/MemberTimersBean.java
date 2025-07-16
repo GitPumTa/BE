@@ -82,8 +82,7 @@ public class MemberTimersBean {
     }
 
     // 그룹 내 공부 시간 랭킹 리스트
-    public List<GetMemberTimersResponseDTO.DurationLeaderDTO> getDurationLeaders(
-            UUID accountId, UUID groupId) {
+    public List<GetMemberTimersResponseDTO.DurationLeaderDTO> getDurationLeaders(UUID groupId) {
         // groupId로 같은 그룹 속한 userId 리스트 가져오기
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
@@ -119,8 +118,7 @@ public class MemberTimersBean {
     }
 
     // 그룹 내 커밋 개수 랭킹 리스트
-    public List<GetMemberTimersResponseDTO.CommitLeaderDTO> getCommitLeaders(
-            UUID accountId, UUID groupId) {
+    public List<GetMemberTimersResponseDTO.CommitLeaderDTO> getCommitLeaders(UUID groupId) {
         // groupId로 같은 그룹 속한 userId 리스트 가져오기
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
