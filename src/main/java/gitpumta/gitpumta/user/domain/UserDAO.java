@@ -14,6 +14,7 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 public class UserDAO {
+
     @Id
     private UUID id;
 
