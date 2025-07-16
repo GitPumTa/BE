@@ -144,7 +144,6 @@ public class GroupService {
         if (dto.getName() != null && !dto.getName().isBlank()) {
             group.setName(dto.getName());
         }
-
         if (dto.getDescription() != null) {
             group.setDescription(dto.getDescription());
         }
