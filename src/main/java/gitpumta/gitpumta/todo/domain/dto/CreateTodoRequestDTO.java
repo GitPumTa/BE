@@ -9,9 +9,9 @@ import java.util.UUID;
 public class CreateTodoRequestDTO {
     private UUID id;
 
-    private String plannerId;
+    private UUID plannerId;
 
-    private String userId;
+    private UUID userId;
 
     private String title;
 

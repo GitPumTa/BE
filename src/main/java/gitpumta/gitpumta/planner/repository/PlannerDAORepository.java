@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface PlannerDAORepository extends JpaRepository<PlannerDAO, UUID> {
-    List<PlannerDAO> findByUserId(String userId);
+    List<PlannerDAO> findByUserId(UUID userId);
 
-    Optional<PlannerDAO> findByUserIdAndName(String userId, String name);
+    Optional<PlannerDAO> findByUserIdAndName(UUID userId, String name);
 }

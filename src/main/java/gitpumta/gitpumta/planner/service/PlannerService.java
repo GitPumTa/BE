@@ -31,7 +31,7 @@ public class PlannerService {
     }
 
     // 플래너 유저기반 조회
-    public List<PlannerResponseDTO> getAllPlannersByUserId(String userId) {
+    public List<PlannerResponseDTO> getAllPlannersByUserId(UUID userId) {
         return plannerRepository.findByUserId(userId)
                 .stream()
                 .map(planner -> PlannerResponseDTO.builder()
@@ -43,7 +43,7 @@ public class PlannerService {
     }
 
     // 플래너 유저기반 상세조회
-    public PlannerResponseDTO getPlannerByUserIdAndName(String userId, String name) {
+    public PlannerResponseDTO getPlannerByUserIdAndName(UUID userId, String name) {
         return plannerRepository.findByUserIdAndName(userId, name)
                 .stream()
                 .findFirst() // 첫 번째 결과만 꺼냄

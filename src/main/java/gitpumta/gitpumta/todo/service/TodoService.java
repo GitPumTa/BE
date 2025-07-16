@@ -32,7 +32,7 @@ public class TodoService {
     }
 
     // todo 유저기반 조회
-    public List<TodoResponseDTO> getAllTodosByUserId(String userId) {
+    public List<TodoResponseDTO> getAllTodosByUserId(UUID userId) {
         return todoRepository.findByUserId(userId)
                 .stream()
                 .map(todo -> TodoResponseDTO.builder()
@@ -43,7 +43,7 @@ public class TodoService {
     }
 
     // todo 유저기반 상세조회
-    public TodoResponseDTO getTodoByUserIdAndTitle(String userId, String title) {
+    public TodoResponseDTO getTodoByUserIdAndTitle(UUID userId, String title) {
         return todoRepository.findByUserIdAndTitle(userId, title)
                 .stream()
                 .findFirst() // 첫 번째 결과만 꺼냄

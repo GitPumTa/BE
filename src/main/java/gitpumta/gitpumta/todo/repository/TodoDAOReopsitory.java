@@ -11,9 +11,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface TodoDAOReopsitory extends JpaRepository<TodoDAO, String> {
-    List<TodoDAO> findByUserId(String userId);
+public interface TodoDAOReopsitory extends JpaRepository<TodoDAO, UUID> {
+    List<TodoDAO> findByUserId(UUID userId);
 
-    Optional<TodoDAO> findByUserIdAndTitle(String userId, String title);
+    Optional<TodoDAO> findByUserIdAndTitle(UUID userId, String title);
 
 }

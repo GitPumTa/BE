@@ -18,7 +18,7 @@ public class MainTimerRepoBean {
     }
 
     public List<RepoDTO> exec(UUID accountId) {
-        List<PlannerDAO> planners = plannerDAORepository.findByUserId(accountId.toString());
+        List<PlannerDAO> planners = plannerDAORepository.findByUserId(accountId);
 
         return planners.stream().map(planner -> {
             RepoDTO repoDTO = new RepoDTO();

@@ -35,13 +35,13 @@ public class PlannerController {
 
     // 조회
     @GetMapping(value = "/list/{user_id}")
-    public ResponseEntity<?> getTodoPlannerByUserid(@PathVariable String user_id) {
+    public ResponseEntity<?> getTodoPlannerByUserid(@PathVariable UUID user_id) {
         return ResponseEntity.ok(plannerService.getAllPlannersByUserId(user_id));
     }
 
 //    상세 조회
     @GetMapping(value = "/list/{user_id}/{name}")
-    public ResponseEntity<?> getPlannerByUserIdAndName(@PathVariable String user_id, @PathVariable String name) {
+    public ResponseEntity<?> getPlannerByUserIdAndName(@PathVariable UUID user_id, @PathVariable String name) {
         return ResponseEntity.ok(plannerService.getPlannerByUserIdAndName(user_id, name));
     }
 }
