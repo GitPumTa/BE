@@ -55,10 +55,11 @@ public class TimerController {
     @GetMapping(value = "/group")
     public ResponseEntity<Map<String, Object>> getLeaders(@RequestParam("account_id") UUID accountId,
                                                           @RequestParam("group_id") UUID groupId) {
-        GetMemberTimersResponseDTO getMemberTimersResponseDTO = timerService.getMemberTimers(accountId, groupId);
         Map<String, Object> responseMap = new HashMap<>();
 
         try {
+            GetMemberTimersResponseDTO getMemberTimersResponseDTO = timerService.getMemberTimers(accountId, groupId);
+
             responseMap.put("message", "정상적으로 repo list를 로드하였습니다.");
             responseMap.put("my_monitoring_group", getMemberTimersResponseDTO.getMyMonitoringGroup());
             responseMap.put("my_monitoring_group_description", getMemberTimersResponseDTO.getMyMonitoringGroupDescription());
@@ -70,8 +71,8 @@ public class TimerController {
             return ResponseEntity.status(HttpStatus.OK).body(responseMap);
         } catch (Exception e) {
             responseMap.put("message", "그룹 타이머 확인 실패");
+            responseMap.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
         }
     }
-
 }

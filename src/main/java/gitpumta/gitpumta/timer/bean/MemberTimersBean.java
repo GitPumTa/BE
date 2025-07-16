@@ -35,9 +35,6 @@ public class MemberTimersBean {
         this.commitDAORepository = commitDAORepository;
     }
 
-    //public GetMemberTimersResponseDTO exec(GetMemberTimersRequestDTO getMemberTimersRequestDTO) {
-    //}
-
     public String getMyMonitoringGroup(UUID groupId) {
         GroupDAO group = groupDAORepository.findByIdAndDeletedAtIsNull(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다."));
@@ -54,7 +51,7 @@ public class MemberTimersBean {
     }
 
     // 그룹 내 나의 랭킹 계산
-    public int getMyRank(UUID accountId, UUID groupId) {
+    public int getMyRank(UUID accountId, UUID groupId) {/*
         // groupId로 같은 그룹 속한 userId 리스트 가져오기
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
@@ -71,7 +68,7 @@ public class MemberTimersBean {
             if (timers.get(i).getUserId().equals(accountId)) {
                 return i + 1;
             }
-        }
+        }*/
 
         return 0; // 해당 멤버 없을 때
     }
@@ -86,7 +83,7 @@ public class MemberTimersBean {
 
     // 그룹 내 공부 시간 랭킹 리스트
     public List<GetMemberTimersResponseDTO.DurationLeaderDTO> getDurationLeaders(
-            UUID accountId, UUID groupId) {
+            UUID accountId, UUID groupId) {/*
         // groupId로 같은 그룹 속한 userId 리스트 가져오기
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
@@ -118,12 +115,12 @@ public class MemberTimersBean {
             result.add(dto);
         }
 
-        return result;
+        return result;*/return Collections.emptyList();
     }
 
     // 그룹 내 커밋 개수 랭킹 리스트
     public List<GetMemberTimersResponseDTO.CommitLeaderDTO> getCommitLeaders(
-            UUID accountId, UUID groupId) {
+            UUID accountId, UUID groupId) {/*
         // groupId로 같은 그룹 속한 userId 리스트 가져오기
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
@@ -178,6 +175,6 @@ public class MemberTimersBean {
             dto.setRank(rank++);
         }
 
-        return result;
+        return result;*/ return Collections.emptyList();
     }
 }
