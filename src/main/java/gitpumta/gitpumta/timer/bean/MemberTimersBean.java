@@ -2,7 +2,6 @@ package gitpumta.gitpumta.timer.bean;
 
 import gitpumta.gitpumta.commit.repository.CommitDAORepository;
 import gitpumta.gitpumta.group.domain.GroupDAO;
-import gitpumta.gitpumta.group.domain.GroupMemberDAO;
 import gitpumta.gitpumta.group.repository.GroupDAORepository;
 import gitpumta.gitpumta.group.repository.GroupMemberDAORepository;
 import gitpumta.gitpumta.planner.domain.PlannerDAO;
@@ -179,6 +178,6 @@ public class MemberTimersBean {
             dto.setRank(rank++);
         }
 
-        return result;// return Collections.emptyList();
+        return result;
     }
 }
