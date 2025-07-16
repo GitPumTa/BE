@@ -2,6 +2,7 @@ package gitpumta.gitpumta.timer.bean;
 
 import gitpumta.gitpumta.group.domain.GroupDAO;
 import gitpumta.gitpumta.group.repository.GroupDAORepository;
+import gitpumta.gitpumta.timer.domain.TimerDAO;
 import gitpumta.gitpumta.timer.domain.dto.GetMemberTimersResponseDTO;
 import gitpumta.gitpumta.timer.repository.TimerDAORepository;
 import gitpumta.gitpumta.user.domain.UserDAO;
@@ -43,10 +44,26 @@ public class MemberTimersBean {
     }
 
     // 그룹 내 나의 랭킹 계산 -> 그룹 테이블 + 타이머 테이블 조인
-    public int getMyRank(UUID accountId, UUID groupId) {
+    public int getMyRank(UUID accountId, UUID groupId) {/*
+        // groupId로 같은 그룹 속한 userId 리스트 가져오기
+        List<UUID> userIds = groupMemberDAORepository
+                .findAllByGroupIdAndDeletedAtIsNull(groupId)
+                .stream()
+                .map(GroupMemberDAO::getUserId)
+                .toList();
 
+        // 해당 userId 리스트에 대해 TimerDAO에서 totalDuration 내림차순 정렬
+        List<TimerDAO> timers = timerDAORepository
+                .findByUserIdInAndDeletedAtIsNullOrderByTotalDurationDesc(userIds);
 
-        return 0;
+        // 정렬된 리스트에서 해당 유저 랭킹 찾기
+        for (int i = 0; i < timers.size(); i++) {
+            if (timers.get(i).getUserId().equals(accountId)) {
+                return i + 1;
+            }
+        }*/
+
+        return 0; // 해당 멤버 없을 때
     }
 
     // 내 이름 가져오기 -> 유저 테이블 참조
