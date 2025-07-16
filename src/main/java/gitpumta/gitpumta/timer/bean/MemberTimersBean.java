@@ -59,7 +59,7 @@ public class MemberTimersBean {
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
                 .stream()
-                .map(member -> member.getUser().getId())
+                .map(member -> member.getUserId())
                 .toList();
 
         // 해당 userId 리스트에 대해 TimerDAO에서 totalDuration 내림차순 정렬
@@ -92,7 +92,7 @@ public class MemberTimersBean {
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
                 .stream()
-                .map(member -> member.getUser().getId())
+                .map(member -> member.getUserId())
                 .toList();
 
         // 해당 userId 리스트에 대해 TimerDAO에서 totalDuration 내림차순 정렬
@@ -128,7 +128,7 @@ public class MemberTimersBean {
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
                 .stream()
-                .map(member -> member.getUser().getId())
+                .map(member -> member.getUserId())
                 .toList();
 
         // 유저 별 모든 플래너 -> 플래너에 연결된 커밋 검색(그중에서 오늘자)

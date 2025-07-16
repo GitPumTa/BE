@@ -18,20 +18,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "group_member")
+//@Table(name = "group_member")
 public class GroupMemberDAO {
 
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id", nullable = false)
-    private GroupDAO group;
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "group_id", nullable = false)
+    private UUID groupId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserDAO user;
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
     @Column(name = "joined_at")
     private LocalDateTime joinedAt;

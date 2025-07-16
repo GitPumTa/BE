@@ -29,14 +29,7 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
-  
-    // 조회
-    @GetMapping("/api/users/{id}")
-    public ResponseEntity<GetUserResponseDTO> getUser(@PathVariable UUID id) {
-        log.info("조회 요청 UUID: {}", id);
-        GetUserResponseDTO response = userService.getUser(id);
-        return ResponseEntity.ok(response);
-    }
+
       
     @PostMapping(value = "/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginUserRequestDTO loginUserRequestDTO) {

@@ -19,28 +19,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
-    private final UserDAORepository userDAORepository;
-    private final GetuserBean getuserBean;
     private final LoginBean loginBean;
     private final SignupBean signupBean;
 
-    public GetUserResponseDTO getUser(UUID id) {
-        UserDAO user = userDAORepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
-
-        return GetUserResponseDTO.builder()
-                .nickname(user.getNickname())
-                .gitId(user.getGitId())
-                .createdAt(user.getCreatedAt())
-                .build();
-    }
   
-    public UserService(UserDAORepository userDAORepository , GetuserBean getuserBean, LoginBean loginBean,
-                       SignupBean signupBean) {
-        this.userDAORepository = userDAORepository;
-        this.getuserBean = getuserBean;
+    public UserService(LoginBean loginBean, SignupBean signupBean) {
         this.loginBean = loginBean;
         this.signupBean = signupBean;
     }

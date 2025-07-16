@@ -13,7 +13,6 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="user")
 public class UserDAO {
 
     @Id

@@ -13,7 +13,7 @@ public class GroupMemberSimpleDTO {
     private final LocalDateTime joinedAt;
 
     public GroupMemberSimpleDTO(GroupMemberDAO dao) {
-        this.userId = dao.getUser().getId();
+        this.userId = dao.getUserId();
         this.joinedAt = dao.getJoinedAt();
     }
 }

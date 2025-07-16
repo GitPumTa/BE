@@ -1,7 +1,6 @@
 package gitpumta.gitpumta.group.service;
 
 import gitpumta.gitpumta.group.bean.CreateGroupBean;
-import gitpumta.gitpumta.group.bean.GetUserInGroupBean;
 import gitpumta.gitpumta.group.bean.JoinGroupBean;
 import gitpumta.gitpumta.group.bean.small.GetGroupMembersBean;
 import gitpumta.gitpumta.group.domain.GroupDAO;
@@ -9,7 +8,6 @@ import gitpumta.gitpumta.group.domain.GroupMemberDAO;
 import gitpumta.gitpumta.group.domain.dto.*;
 import gitpumta.gitpumta.group.repository.GroupMemberDAORepository;
 import gitpumta.gitpumta.group.repository.GroupDAORepository;
-import gitpumta.gitpumta.user.domain.UserDAO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +56,7 @@ public class GroupService {
         return groupRepository.findByDeletedAtIsNull()
                 .stream()
                 .map(group -> {
-                    int memberCnt = groupMemberDAORepository.countByGroupId_IdAndDeletedAtIsNull(group.getId());
+                    int memberCnt = groupMemberDAORepository.countByGroupIdAndDeletedAtIsNull(group.getId());
 
                     return GroupListDTO.builder()
                             .id(group.getId())
@@ -90,7 +88,7 @@ public class GroupService {
         GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 ID 그룹"));
 
-        int memberCnt = groupMemberDAORepository.countByGroupId_IdAndDeletedAtIsNull(groupId);
+        int memberCnt = groupMemberDAORepository.countByGroupIdAndDeletedAtIsNull(groupId);
 
         return GroupResponseDTO.builder()
                 .id(group.getId())
@@ -105,7 +103,7 @@ public class GroupService {
     // UUID 반영 가입 처리 로직
     public GroupMemberDAO joinGroup(UUID groupId, String inputPassword, UUID userId) {
         GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다.")); // controller에서 catch
         if (!joinGroupBean.exec(inputPassword, group.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
@@ -126,8 +124,8 @@ public class GroupService {
         // 가입 처리
         GroupMemberDAO member = GroupMemberDAO.builder()
                 .id(UUID.randomUUID())
-                .group(group)   // GroupDAO 객체
-                .user(UserDAO.builder().id(userId).build())
+                .groupId(groupId)   // GroupDAO 객체
+                .userId(userId)
                 .joinedAt(LocalDateTime.now())
                 .build();
 
@@ -157,7 +155,7 @@ public class GroupService {
             group.setRule(dto.getRule());
         }
 
-        int currentMemberCnt = groupMemberDAORepository.countByGroupId_IdAndDeletedAtIsNull(group.getId());
+        int currentMemberCnt = groupMemberDAORepository.countByGroupIdAndDeletedAtIsNull(group.getId());
         group.setMemberCnt(currentMemberCnt);
 
         group.setUpdatedAt(LocalDateTime.now());
