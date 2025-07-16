@@ -15,14 +15,14 @@ import java.util.*;
 @Entity
 public class TodoDAO {
     @Id
-    @Column(length = 36)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(name = "planner_id", length = 36)
-    private String plannerId;
+    @Column(name = "planner_id", columnDefinition = "BINARY(16)")
+    private UUID plannerId;
 
-    @Column(name = "user_id", nullable = false, length = 36)
-    private String userId;
+    @Column(name = "user_id", columnDefinition = "BINARY(16)")
+    private UUID userId;
 
     @Column(nullable = false, length = 200)
     private String title;

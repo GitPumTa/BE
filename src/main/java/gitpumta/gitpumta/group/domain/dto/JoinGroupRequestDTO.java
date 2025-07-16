@@ -1,19 +1,16 @@
 package gitpumta.gitpumta.group.domain.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.UUID;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class UpdateGroupRequestDTO {
+public class JoinGroupRequestDTO {
+    private UUID userId; // 테스트용 UUID
     private UUID groupId;
-    private String name;
-    private String description;
     private String password;
-    private Integer capacity;
-    private List<String> rule;
 }

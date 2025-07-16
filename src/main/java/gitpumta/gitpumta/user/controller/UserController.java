@@ -1,13 +1,17 @@
 package gitpumta.gitpumta.user.controller;
 import java.util.*;
 
+import ch.qos.logback.classic.Logger;
+import gitpumta.gitpumta.user.domain.dto.GetUserResponseDTO;
 import gitpumta.gitpumta.user.domain.UserDAO;
 import gitpumta.gitpumta.user.domain.dto.LoginUserRequestDTO;
 import gitpumta.gitpumta.user.domain.dto.SignUpUserDTO;
 import gitpumta.gitpumta.user.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/user")
 @CrossOrigin
@@ -26,8 +30,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
 
+      
     @PostMapping(value = "/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginUserRequestDTO loginUserRequestDTO){
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginUserRequestDTO loginUserRequestDTO) {
         UserDAO userDAO = userService.login(loginUserRequestDTO);
         Map<String,Object> requestMap = new HashMap<>();
         requestMap.put("is_success", userDAO!=null? "로그인 성공":"로그인 실패");
@@ -43,5 +48,6 @@ public class UserController {
         requestMap.put("is_success", userDAO!=null? "회원가입 성공":"회원가입 실패");
         requestMap.put("id", userDAO!=null? userDAO.getId(): "");
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+
     }
 }

@@ -1,9 +1,7 @@
 package gitpumta.gitpumta.group.controller;
 
-import gitpumta.gitpumta.group.domain.dto.CreateGroupRequestDTO;
-import gitpumta.gitpumta.group.domain.dto.UpdateGroupRequestDTO;
-import gitpumta.gitpumta.group.domain.dto.GroupListDTO;
-import gitpumta.gitpumta.group.domain.dto.GroupResponseDTO;
+import gitpumta.gitpumta.group.domain.GroupMemberDAO;
+import gitpumta.gitpumta.group.domain.dto.*;
 import gitpumta.gitpumta.group.service.GroupService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,27 +61,63 @@ public class GroupController {
     public ResponseEntity<Map<String, Object>> getGroupDetail(@RequestParam UUID groupId) {
         GroupResponseDTO groupResponseDTO = groupService.getGroupDetail(groupId);
         Map<String,Object> requestMap = new HashMap<>();
-        requestMap.put("group",groupResponseDTO);
-
-        return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+        try {
+            requestMap.put("message", "상세 정보 조회 성공");
+            requestMap.put("group",groupResponseDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+        } catch (Exception e) {
+            requestMap.put("message", "상세 정보 조회 실패");
+            requestMap.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(requestMap);
+        }
     }
 
     // 특정 그룹 가입
     @PostMapping(value = "/join")
-    public ResponseEntity<Map<String, Object>> joinGroup(
-            @RequestParam UUID groupId,
-            @RequestParam String password) {
-        groupService.joinGroup(groupId, password);
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "그룹 가입 성공");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public ResponseEntity<Map<String, Object>> joinGroup(@RequestBody JoinGroupRequestDTO request) {
+        Map<String, Object> res = new HashMap<>();
+
+        try {
+            GroupMemberDAO member = groupService.joinGroup(request.getGroupId(), request.getPassword(), request.getUserId());
+            res.put("message", "가입 성공");
+            res.put("groupMemberId", member.getId());
+            return ResponseEntity.ok(res);
+        } catch (Exception e) {
+            res.put("message", "가입 실패");
+            res.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+        }
     }
 
-    @PostMapping("/update")
+    // 그룹 정보 수정
+    @PostMapping(value = "/update")
     public ResponseEntity<Map<String, Object>> updateGroup(@RequestBody UpdateGroupRequestDTO dto) {
         groupService.updateGroup(dto);
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "그룹 정보 수정 완료");
-        return ResponseEntity.ok(response);
+        try {
+            response.put("message", "그룹 정보 수정 완료");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "그룹 정보 수정 실패");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
+
+    @GetMapping(value = "/membersInfo")
+    public ResponseEntity<Map<String, Object>> getGroupMemberDetail(@RequestParam UUID groupId) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<GroupMemberSimpleDTO> members = groupService.getGroupMembers(groupId);
+            response.put("message", "맴버 목록 조회 성공");
+            response.put("data", members.isEmpty() ? "비어있는 그룹입니다." : members);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "맴버 목록 조회 실패");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
+
 }

@@ -17,9 +17,10 @@ import java.util.UUID;
 @Entity
 public class CommitDAO {
     @Id
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(name = "planner_id", nullable = false)
+    @Column(name = "planner_id", columnDefinition = "BINARY(16)")
     private UUID plannerId;
 
     @Column(nullable = false)

@@ -18,10 +18,10 @@ import java.util.UUID;
 public class PlannerDAO {
 
     @Id
-    @Column(length = 36)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(name = "user_id", nullable = false, length = 36)
+    @Column(name = "user_id", columnDefinition = "BINARY(16)")
     private String userId;
 
     @Column(nullable = false, length = 100)

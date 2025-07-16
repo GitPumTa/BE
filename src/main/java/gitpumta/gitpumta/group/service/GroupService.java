@@ -2,16 +2,16 @@ package gitpumta.gitpumta.group.service;
 
 import gitpumta.gitpumta.group.bean.CreateGroupBean;
 import gitpumta.gitpumta.group.bean.JoinGroupBean;
+import gitpumta.gitpumta.group.bean.small.GetGroupMembersBean;
 import gitpumta.gitpumta.group.domain.GroupDAO;
-import gitpumta.gitpumta.group.domain.dto.CreateGroupRequestDTO;
-import gitpumta.gitpumta.group.domain.dto.UpdateGroupRequestDTO;
+import gitpumta.gitpumta.group.domain.GroupMemberDAO;
+import gitpumta.gitpumta.group.domain.dto.*;
+import gitpumta.gitpumta.group.repository.GroupMemberDAORepository;
 import gitpumta.gitpumta.group.repository.GroupDAORepository;
-import gitpumta.gitpumta.group.domain.dto.GroupListDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 // 그룹 조회 목록 기능 import
-import gitpumta.gitpumta.group.domain.dto.GroupResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,15 +26,21 @@ public class GroupService {
     private final GroupDAORepository groupRepository;
     private final JoinGroupBean joinGroupBean;
     private final PasswordEncoder passwordEncoder;
+    private final GroupMemberDAORepository groupMemberDAORepository;
+    private final GetGroupMembersBean getGroupMembersBean;
 
     public GroupService(CreateGroupBean createGroupBean,
                         GroupDAORepository groupRepository,
                         JoinGroupBean joinGroupBean,
-                        PasswordEncoder passwordEncoder ) {
+                        PasswordEncoder passwordEncoder,
+                        GroupMemberDAORepository groupMemberDAORepository,
+                        GetGroupMembersBean getGroupMembersBean) {
         this.createGroupBean = createGroupBean;
         this.groupRepository = groupRepository;
         this.joinGroupBean = joinGroupBean;
         this.passwordEncoder = passwordEncoder;
+        this.groupMemberDAORepository = groupMemberDAORepository;
+        this.getGroupMembersBean = getGroupMembersBean;
     }
 
     // 그룹 생성
@@ -49,13 +55,17 @@ public class GroupService {
     public List<GroupListDTO> getAllGroups() {
         return groupRepository.findByDeletedAtIsNull()
                 .stream()
-                .map(group -> GroupListDTO.builder()
-                        .id(group.getId())
-                        .name(group.getName())
-                        .description(group.getDescription())
-                        .capacity(group.getCapacity())
-                        .memberCnt(0) // 가입 인원은 아직 기능 미구현이므로 0
-                        .build())
+                .map(group -> {
+                    int memberCnt = groupMemberDAORepository.countByGroupIdAndDeletedAtIsNull(group.getId());
+
+                    return GroupListDTO.builder()
+                            .id(group.getId())
+                            .name(group.getName())
+                            .description(group.getDescription())
+                            .capacity(group.getCapacity())
+                            .memberCnt(memberCnt) // ← 실제 카운트 반영
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
@@ -78,7 +88,7 @@ public class GroupService {
         GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 ID 그룹"));
 
-        int memberCnt = 0;
+        int memberCnt = groupMemberDAORepository.countByGroupIdAndDeletedAtIsNull(groupId);
 
         return GroupResponseDTO.builder()
                 .id(group.getId())
@@ -90,25 +100,38 @@ public class GroupService {
                 .build();
     }
 
-    // 그룹 가입
-    public void joinGroup(UUID groupId, String inputPassword) {
+    // UUID 반영 가입 처리 로직
+    public GroupMemberDAO joinGroup(UUID groupId, String inputPassword, UUID userId) {
         GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다..."));
-        // 비밀번호 검증 구현부
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다.")); // controller에서 catch
         if (!joinGroupBean.exec(inputPassword, group.getPassword())) {
-            throw new IllegalArgumentException("비밀번호 불일치");
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-        int currentMembers = Optional.ofNullable(group.getMemberCnt()).orElse(0);
-        int capacity = group.getCapacity() != null ? group.getCapacity() : Integer.MAX_VALUE;
+        // 가입 정원 체크 로직
+        int currentCount = groupMemberDAORepository.findByGroupIdAndDeletedAtIsNull(groupId).size();
+        int capacity = Optional.ofNullable(group.getCapacity()).orElse(Integer.MAX_VALUE);
 
-        if (currentMembers >= capacity) {
-            throw new IllegalStateException("정원 초과로 인한 가입 거절");
+        if (currentCount >= capacity) {
+            throw new IllegalStateException("정원이 초과되어 가입할 수 없습니다.");
         }
 
-        group.setMemberCnt(currentMembers + 1);
-        group.setUpdatedAt(LocalDateTime.now());
-        groupRepository.save(group);
+        // 이미 가입한 경우 방지
+        if (groupMemberDAORepository.existsByGroupIdAndUserIdAndDeletedAtIsNull(groupId, userId)) {
+            throw new IllegalStateException("이미 가입한 그룹입니다.");
+        }
+
+        // 가입 처리
+        GroupMemberDAO member = GroupMemberDAO.builder()
+                .id(UUID.randomUUID())
+                .groupId(groupId)   // GroupDAO 객체
+                .userId(userId)
+                .joinedAt(LocalDateTime.now())
+                .build();
+
+        groupMemberDAORepository.save(member);
+
+        return member;
     }
 
     // 그룹 정보 수정 (이름/설명/비번/규칙)
@@ -116,6 +139,9 @@ public class GroupService {
         GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(dto.getGroupId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다."));
 
+        if (dto.getName() != null && !dto.getName().isBlank()) {
+            group.setName(dto.getName());
+        }
         if (dto.getDescription() != null) {
             group.setDescription(dto.getDescription());
         }
@@ -129,7 +155,16 @@ public class GroupService {
             group.setRule(dto.getRule());
         }
 
+        int currentMemberCnt = groupMemberDAORepository.countByGroupIdAndDeletedAtIsNull(group.getId());
+        group.setMemberCnt(currentMemberCnt);
+
         group.setUpdatedAt(LocalDateTime.now());
         groupRepository.save(group);
+    }
+
+    public List<GroupMemberSimpleDTO> getGroupMembers(UUID groupId) {
+        return getGroupMembersBean.exec(groupId).stream()
+                .map(GroupMemberSimpleDTO::new)
+                .collect(Collectors.toList());
     }
 }
