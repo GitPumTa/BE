@@ -27,7 +27,9 @@ CREATE TABLE user (
                       git_id VARCHAR(100),
                       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                      deleted_at DATETIME
+                      deleted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                      total_duration INT DEFAULT 0,
+                      total_commit INT DEFAULT 0
 );
 
 -- Group 테이블
