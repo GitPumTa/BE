@@ -2,7 +2,9 @@ package gitpumta.gitpumta.user.domain;
 
 
 import jakarta.persistence.*;
+import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.data.annotation.*;
 
 import java.time.*;
 import java.util.*;
@@ -31,9 +33,11 @@ public class UserDAO {
     @Column(name = "git_id")
     private String gitId;
 
-    @Column(name = "created_at")
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
