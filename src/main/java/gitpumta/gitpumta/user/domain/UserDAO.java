@@ -21,7 +21,7 @@ public class UserDAO {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(name = "account_id", columnDefinition = "BINARY(16)")
+    @Column(name = "account_id")
     private String accountId;
 
     @Column(nullable = false)

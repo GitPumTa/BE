@@ -147,7 +147,7 @@ public class MemberTimersBean {
         Map<UUID, Integer> commitCountMap = new HashMap<>();
 
         for (UUID userId : userIds) {
-            List<PlannerDAO> planners = plannerDAORepository.findByUserId(userId.toString());
+            List<PlannerDAO> planners = plannerDAORepository.findByUserId(userId);
 
             int totalCommits = 0;
 

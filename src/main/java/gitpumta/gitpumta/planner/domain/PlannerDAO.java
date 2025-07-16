@@ -22,7 +22,7 @@ public class PlannerDAO {
     private UUID id;
 
     @Column(name = "user_id", columnDefinition = "BINARY(16)")
-    private String userId;
+    private UUID userId;
 
     @Column(nullable = false, length = 100)
     private String name;
