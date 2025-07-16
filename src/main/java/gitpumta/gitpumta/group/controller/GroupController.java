@@ -59,9 +59,9 @@ public class GroupController {
     // 득정 그룹 상세 정보 조회
     @GetMapping(value = "/detail")
     public ResponseEntity<Map<String, Object>> getGroupDetail(@RequestParam UUID groupId) {
-        GroupResponseDTO groupResponseDTO = groupService.getGroupDetail(groupId);
         Map<String,Object> requestMap = new HashMap<>();
         try {
+            GroupResponseDTO groupResponseDTO = groupService.getGroupDetail(groupId);
             requestMap.put("message", "상세 정보 조회 성공");
             requestMap.put("group",groupResponseDTO);
             return ResponseEntity.status(HttpStatus.OK).body(requestMap);
