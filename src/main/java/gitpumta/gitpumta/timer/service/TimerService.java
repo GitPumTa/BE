@@ -23,25 +23,25 @@ public class TimerService {
     }
 
     public LocalDateTime startTimer(TimerRequestDTO timerRequestDTO) {
-        String accountId = timerRequestDTO.getAccountId();
+        UUID accountId = timerRequestDTO.getAccountId();
 
         startTimerBean.exec(accountId, timerRequestDTO);
         return timerRequestDTO.getSend_at();
     }
 
     public LocalDateTime stopTimer(TimerRequestDTO timerRequestDTO) {
-        String accountId = timerRequestDTO.getAccountId();
+        UUID accountId = timerRequestDTO.getAccountId();
 
         stopTimerBean.exec(accountId, timerRequestDTO);
         return timerRequestDTO.getSend_at();
     }
 
-    public GetMemberTimersResponseDTO getMemberTimers(String accountId, UUID groupId) {
+    public GetMemberTimersResponseDTO getMemberTimers(UUID accountId, UUID groupId) {
         GetMemberTimersResponseDTO memberTimersResponseDTO = new GetMemberTimersResponseDTO();
 
-        memberTimersResponseDTO.setMyMonitoringGroup(memberTimersBean.getMyMonitoringGroup(groupId));
+        memberTimersResponseDTO.setMyMonitoringGroup(memberTimersBean.getMyMonitoringGroup(accountId, groupId));
         memberTimersResponseDTO.setMyMonitoringGroupDescription(
-                memberTimersBean.getMonitoringGroupDescription(groupId));
+                memberTimersBean.getMonitoringGroupDescription(accountId, groupId));
         memberTimersResponseDTO.setMyRank(memberTimersBean.getMyRank(accountId, groupId));
         memberTimersResponseDTO.setMyName(memberTimersBean.getMyName(accountId));
         memberTimersResponseDTO.setDurationLeaders(memberTimersBean.getDurationLeaders(accountId,groupId));

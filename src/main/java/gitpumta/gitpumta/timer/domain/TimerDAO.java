@@ -19,7 +19,7 @@ public class TimerDAO {
     private UUID id;
 
     @Column(name = "user_id",nullable = false)
-    private String userId;
+    private UUID userId;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
