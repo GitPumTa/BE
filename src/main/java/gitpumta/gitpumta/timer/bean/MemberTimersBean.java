@@ -9,6 +9,7 @@ import gitpumta.gitpumta.planner.repository.PlannerDAORepository;
 import gitpumta.gitpumta.timer.domain.TimerDAO;
 import gitpumta.gitpumta.timer.domain.dto.GetMemberTimersResponseDTO;
 import gitpumta.gitpumta.timer.repository.TimerDAORepository;
+import gitpumta.gitpumta.user.domain.UserDAO;
 import gitpumta.gitpumta.user.repository.UserDAORepository;
 import org.springframework.stereotype.Component;
 
