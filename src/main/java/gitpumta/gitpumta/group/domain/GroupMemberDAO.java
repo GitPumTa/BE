@@ -21,7 +21,7 @@ import java.util.UUID;
 public class GroupMemberDAO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,6 +34,12 @@ public class GroupMemberDAO {
 
     @Column(name = "joined_at")
     private LocalDateTime joinedAt;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;

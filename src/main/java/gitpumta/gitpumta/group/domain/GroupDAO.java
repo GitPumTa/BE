@@ -13,6 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 public class GroupDAO {
+
     @Id
     @Column(name = "id", columnDefinition = "BINARY(16)")
     private UUID id;
