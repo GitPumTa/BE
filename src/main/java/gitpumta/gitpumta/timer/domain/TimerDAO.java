@@ -16,9 +16,10 @@ import java.util.UUID;
 @Entity
 public class TimerDAO {
     @Id
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(name = "user_id",nullable = false)
+    @Column(name = "user_id", columnDefinition = "BINARY(16)")
     private UUID userId;
 
     @Column(name = "updated_at")
