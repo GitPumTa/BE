@@ -136,6 +136,10 @@ public class GroupService {
         GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(dto.getGroupId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다."));
 
+        if (dto.getName() != null && !dto.getName().isBlank()) {
+            group.setName(dto.getName());
+        }
+
         if (dto.getDescription() != null) {
             group.setDescription(dto.getDescription());
         }
