@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 public class TimerRequestDTO {
-    private String accountId;
+    private UUID accountId;
     private LocalDateTime send_at;
 
     private int status;
