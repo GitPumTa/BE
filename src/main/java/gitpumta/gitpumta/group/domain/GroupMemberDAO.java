@@ -1,5 +1,6 @@
 package gitpumta.gitpumta.group.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gitpumta.gitpumta.user.domain.UserDAO;
 import jakarta.persistence.*;
 import lombok.*;
