@@ -70,8 +70,9 @@ public class GroupController {
 
     // 특정 그룹 가입
     @PostMapping(value = "/join")
-    public ResponseEntity<Map<String, Object>> joinGroup(@RequestParam UUID groupId,
-                                                         @RequestParam String password) {
+    public ResponseEntity<Map<String, Object>> joinGroup(
+            @RequestParam UUID groupId,
+            @RequestParam String password) {
         groupService.joinGroup(groupId, password);
         Map<String, Object> response = new HashMap<>();
         response.put("message", "그룹 가입 성공");
