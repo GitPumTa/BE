@@ -25,6 +25,7 @@ public class CreateGroupBean {
                 .password(passwordEncoderBean.encode(createGroupRequestDTO.getPassword()))
                 .capacity(createGroupRequestDTO.getCapacity())
                 .description(createGroupRequestDTO.getDescription())
+                .memberCnt(0)
                 .build();
         return repository.save(group);
     }
