@@ -104,13 +104,18 @@ public class GroupController {
         }
     }
 
-    // 맴버 정보
-    @GetMapping(value = "/members")
-    public ResponseEntity<Map<String, Object>> getGroupMembers(@RequestParam UUID groupId) {
-        List<UUID> userIds = groupService.getUserIdsInGroup(groupId);
-
+    @GetMapping(value = "/membersInfo")
+    public ResponseEntity<Map<String, Object>> getGroupMemberDetail(@RequestParam UUID groupId) {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", userIds != null? userIds : "등록된 사용자가 없음");
-        return ResponseEntity.ok(response);
+        try {
+            List<GroupMemberSimpleDTO> members = groupService.getGroupMembers(groupId);
+            response.put("message", "맴버 목록 조회 성공");
+            response.put("data", members.isEmpty() ? "비어있는 그룹입니다." : members);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "맴버 목록 조회 실패");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 }

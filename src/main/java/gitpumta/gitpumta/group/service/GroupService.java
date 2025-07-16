@@ -1,7 +1,9 @@
 package gitpumta.gitpumta.group.service;
 
 import gitpumta.gitpumta.group.bean.CreateGroupBean;
+import gitpumta.gitpumta.group.bean.GetUserInGroupBean;
 import gitpumta.gitpumta.group.bean.JoinGroupBean;
+import gitpumta.gitpumta.group.bean.small.GetGroupMembersBean;
 import gitpumta.gitpumta.group.domain.GroupDAO;
 import gitpumta.gitpumta.group.domain.GroupMemberDAO;
 import gitpumta.gitpumta.group.domain.dto.*;
@@ -27,17 +29,20 @@ public class GroupService {
     private final JoinGroupBean joinGroupBean;
     private final PasswordEncoder passwordEncoder;
     private final GroupMemberDAORepository groupMemberDAORepository;
+    private final GetGroupMembersBean getGroupMembersBean;
 
     public GroupService(CreateGroupBean createGroupBean,
                         GroupDAORepository groupRepository,
                         JoinGroupBean joinGroupBean,
                         PasswordEncoder passwordEncoder,
-                        GroupMemberDAORepository groupMemberDAORepository) {
+                        GroupMemberDAORepository groupMemberDAORepository,
+                        GetGroupMembersBean getGroupMembersBean) {
         this.createGroupBean = createGroupBean;
         this.groupRepository = groupRepository;
         this.joinGroupBean = joinGroupBean;
         this.passwordEncoder = passwordEncoder;
         this.groupMemberDAORepository = groupMemberDAORepository;
+        this.getGroupMembersBean = getGroupMembersBean;
     }
 
     // 그룹 생성
@@ -160,12 +165,9 @@ public class GroupService {
         groupRepository.save(group);
     }
 
-    // 조회 메서드
-    public List<UUID> getUserIdsInGroup(UUID groupId) {
-        List<GroupMemberDAO> members = groupMemberDAORepository.findByGroupIdAndDeletedAtIsNull(groupId);
-
-        return members.stream()
-                .map(member -> member.getUser().getId())  // UserDAO → UUID
+    public List<GroupMemberSimpleDTO> getGroupMembers(UUID groupId) {
+        return getGroupMembersBean.exec(groupId).stream()
+                .map(GroupMemberSimpleDTO::new)
                 .collect(Collectors.toList());
     }
 }
