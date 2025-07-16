@@ -23,14 +23,15 @@ public class GroupMemberDAO {
 
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     //@ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "group_id", nullable = false)
+    @Column(name = "group_id", columnDefinition = "BINARY(16)")
     private UUID groupId;
 
     //@ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", columnDefinition = "BINARY(16)")
     private UUID userId;
 
     @Column(name = "joined_at")
