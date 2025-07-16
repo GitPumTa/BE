@@ -16,10 +16,10 @@ import java.util.*;
 public class UserDAO {
 
     @Id
-    @Column(length = 36)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(name = "account_id", nullable = false, unique = true)
+    @Column(name = "account_id", columnDefinition = "BINARY(16)")
     private String accountId;
 
     @Column(nullable = false)
