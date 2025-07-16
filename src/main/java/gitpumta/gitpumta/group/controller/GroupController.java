@@ -1,7 +1,9 @@
 package gitpumta.gitpumta.group.controller;
 
-import gitpumta.gitpumta.group.domain.GroupMemberDAO;
-import gitpumta.gitpumta.group.domain.dto.*;
+import gitpumta.gitpumta.group.domain.dto.CreateGroupRequestDTO;
+import gitpumta.gitpumta.group.domain.dto.UpdateGroupRequestDTO;
+import gitpumta.gitpumta.group.domain.dto.GroupListDTO;
+import gitpumta.gitpumta.group.domain.dto.GroupResponseDTO;
 import gitpumta.gitpumta.group.service.GroupService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,37 +70,19 @@ public class GroupController {
 
     // 특정 그룹 가입
     @PostMapping(value = "/join")
-    public ResponseEntity<Map<String, Object>> joinGroup(@RequestBody JoinGroupRequestDTO request) {
-        Map<String, Object> res = new HashMap<>();
-
-        try {
-            GroupMemberDAO member = groupService.joinGroup(request.getGroupId(), request.getPassword(), request.getUserId());
-            res.put("message", "가입 성공");
-            res.put("groupMemberId", member.getId());
-            return ResponseEntity.ok(res);
-        } catch (Exception e) {
-            res.put("message", "가입 실패");
-            res.put("error", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-        }
+    public ResponseEntity<Map<String, Object>> joinGroup(@RequestParam UUID groupId,
+                                                         @RequestParam String password) {
+        groupService.joinGroup(groupId, password);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "그룹 가입 성공");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // 그룹 정보 수정
-    @PostMapping(value = "/update")
+    @PostMapping("/update")
     public ResponseEntity<Map<String, Object>> updateGroup(@RequestBody UpdateGroupRequestDTO dto) {
         groupService.updateGroup(dto);
         Map<String, Object> response = new HashMap<>();
         response.put("message", "그룹 정보 수정 완료");
-        return ResponseEntity.ok(response);
-    }
-
-    // 맴버 정보
-    @GetMapping(value = "/members")
-    public ResponseEntity<Map<String, Object>> getGroupMembers(@RequestParam UUID groupId) {
-        List<UUID> userIds = groupService.getUserIdsInGroup(groupId);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("userIds", userIds);
         return ResponseEntity.ok(response);
     }
 }
