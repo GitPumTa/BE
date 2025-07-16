@@ -16,7 +16,7 @@ public class StopTimerBean {
         this.timerDAORepository = timerDAORepository;
     }
 
-    public void exec(UUID accountId, TimerRequestDTO timerRequestDTO) {
+    public void exec(String accountId, TimerRequestDTO timerRequestDTO) {
         int totalDuration = timerRequestDTO.getTotal_duration();
         LocalDateTime now = timerRequestDTO.getSend_at();
 
