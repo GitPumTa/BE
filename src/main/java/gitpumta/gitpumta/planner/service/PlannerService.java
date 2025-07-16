@@ -20,13 +20,15 @@ public class PlannerService {
     private final CreatePlannerBean createPlannerBean;
     private PlannerDAORepository plannerRepository;
 
-    @Autowired
     public PlannerService(CreatePlannerBean createPlannerBean, PlannerDAORepository plannerRepository) {
         this.createPlannerBean = createPlannerBean;
         this.plannerRepository = plannerRepository;
     }
+
+    //플래너 생성
     public UUID createPlanner(CreatePlannerRequestDTO createPlannerRequestDTO) {
         PlannerDAO plannerDAO = createPlannerBean.exec(createPlannerRequestDTO);
+        plannerRepository.save(plannerDAO);
         return plannerDAO.getId();
     }
 
