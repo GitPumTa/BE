@@ -15,6 +15,7 @@ import java.util.*;
 @Entity
 @Table(name="user")
 public class UserDAO {
+
     @Id
     @Column(length = 36)
     private UUID id;

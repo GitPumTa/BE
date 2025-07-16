@@ -3,6 +3,9 @@ import java.util.*;
 
 import ch.qos.logback.classic.Logger;
 import gitpumta.gitpumta.user.domain.dto.GetUserResponseDTO;
+import gitpumta.gitpumta.user.domain.UserDAO;
+import gitpumta.gitpumta.user.domain.dto.LoginUserRequestDTO;
+import gitpumta.gitpumta.user.domain.dto.SignUpUserDTO;
 import gitpumta.gitpumta.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -26,23 +29,31 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
-
-//    @GetMapping(value = "/get")
-//    public ResponseEntity<Map<String, Object>> getUser(@RequestBody GetUserRequestDTO getUserRequestDTO) {
-//        GetUserResponseDTO getUserResponseDTO = userService.getUser(getUserRequestDTO);
-//        Map<String, Object> requestMap = new HashMap<>();
-//        requestMap.put("is_success", getUserResponseDTO != null);
-//        requestMap.put("message", getUserResponseDTO != null ? "유저 정보 반환 성공. " : "유저 정보 반환 실패. ");
-//        requestMap.put("user", getUserResponseDTO);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(requestMap);
-//    }
-
+  
     // 조회
     @GetMapping("/api/users/{id}")
     public ResponseEntity<GetUserResponseDTO> getUser(@PathVariable UUID id) {
         log.info("조회 요청 UUID: {}", id);
         GetUserResponseDTO response = userService.getUser(id);
         return ResponseEntity.ok(response);
+      
+    @PostMapping(value = "/login")
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginUserRequestDTO loginUserRequestDTO){
+        UserDAO userDAO = userService.login(loginUserRequestDTO);
+        Map<String,Object> requestMap = new HashMap<>();
+        requestMap.put("is_success", userDAO!=null? "로그인 성공":"로그인 실패");
+        requestMap.put("id", userDAO!=null? userDAO.getId(): "");
+        return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+    }
+
+    @PostMapping(value = "/signup")
+    public ResponseEntity<Map<String, Object>> signup(@RequestBody SignUpUserDTO signUpUserDTO){
+        UserDAO userDAO = userService.signup(signUpUserDTO);
+
+        Map<String,Object> requestMap = new HashMap<>();
+        requestMap.put("is_success", userDAO!=null? "회원가입 성공":"회원가입 실패");
+        requestMap.put("id", userDAO!=null? userDAO.getId(): "");
+        return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+
     }
 }

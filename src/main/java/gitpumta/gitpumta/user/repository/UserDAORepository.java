@@ -15,4 +15,6 @@ public interface UserDAORepository extends JpaRepository<UserDAO, UUID> {
     List<UserDAO> findAllByOrderByTotalDurationDesc();
     List<UserDAO> findAllByOrderByTotalCommitDesc();
     Optional<UserDAO> findAllById(UUID id);
+    Optional<UserDAO> findById(UUID userId);
+    Optional<UserDAO> findByAccountId(String accountId);
 }
