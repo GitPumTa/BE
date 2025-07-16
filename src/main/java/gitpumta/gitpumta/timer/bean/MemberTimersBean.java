@@ -42,7 +42,7 @@ public class MemberTimersBean {
     }
 
     // 그룹 내 나의 랭킹 계산 -> 그룹 테이블 + 타이머 테이블 조인
-    public int getMyRank(UUID accountId, UUID groupId) {
+    public int getMyRank(String accountId, UUID groupId) {
         return 0;
     }
 
@@ -50,7 +50,7 @@ public class MemberTimersBean {
     public String getMyName(String accountId) {
         UserDAO user = userDAORepository.findByAccountId(accountId);
 
-        return null;
+        return user.getNickname();
     }
 
     // 그룹 내 공부 시간 랭킹 리스트 -> 그룹 테이블 + 타이머 테이블 조인
