@@ -15,7 +15,7 @@ services:
 
   db:
     image: mysql:8
-    container_name: gitpumta-db
+    container_name: root
     environment:
       MYSQL_DATABASE: gitpumta
       MYSQL_ROOT_PASSWORD: 1234
