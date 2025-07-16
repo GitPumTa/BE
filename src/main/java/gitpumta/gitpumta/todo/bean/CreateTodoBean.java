@@ -11,13 +11,16 @@ import java.util.UUID;
 @Component
 public class CreateTodoBean {
     private TodoDAOReopsitory reopsitory;
+
     public CreateTodoBean(TodoDAOReopsitory reopsitory) { this.reopsitory = reopsitory; }
+
     public TodoDAO exec(CreateTodoRequestDTO createTodoRequestDTO) {
         TodoDAO todo = TodoDAO.builder()
                 .id(UUID.randomUUID())
-                .plannerId(createTodoRequestDTO.getPlannerId())
-                .userId(createTodoRequestDTO.getUserId())
+                .plannerId(UUID.randomUUID())
+                .userId(UUID.randomUUID())
                 .title(createTodoRequestDTO.getTitle())
+                .description(createTodoRequestDTO.getDescription())
                 .status(createTodoRequestDTO.getStatus())
                 .dueDate(createTodoRequestDTO.getDueDate())
                 .build();
