@@ -97,20 +97,10 @@ public class GroupService {
                 .build();
     }
 
-    // 그룹 가입 이전 로직
-//    public void joinGroup(JoinGroupRequestDTO joinGroupRequestDTO) {
-//        GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(joinGroupRequestDTO.getGroupId())
-//                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다..."));
-//        // 비밀번호 비교
-//        if (!joinGroupBean.exec(joinGroupRequestDTO.getPassword(), group.getPassword())) {
-//            throw new IllegalArgumentException("비밀번호 불일치");
-//        }
-//    }
     // UUID 반영 가입 처리 로직
     public GroupMemberDAO joinGroup(UUID groupId, String inputPassword, UUID userId) {
         GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다."));
-
         if (!joinGroupBean.exec(inputPassword, group.getPassword())) {
             throw new IllegalArgumentException("비밀번호 불일치");
         }
