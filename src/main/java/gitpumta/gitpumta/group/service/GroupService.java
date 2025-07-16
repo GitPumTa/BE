@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.Optional;
 
 @Service
 public class GroupService {
@@ -93,10 +94,21 @@ public class GroupService {
     public void joinGroup(UUID groupId, String inputPassword) {
         GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다..."));
-        // 비밀번호 비교
+        // 비밀번호 검증 구현부
         if (!joinGroupBean.exec(inputPassword, group.getPassword())) {
             throw new IllegalArgumentException("비밀번호 불일치");
         }
+
+        int currentMembers = Optional.ofNullable(group.getMemberCnt()).orElse(0);
+        int capacity = group.getCapacity() != null ? group.getCapacity() : Integer.MAX_VALUE;
+
+        if (currentMembers >= capacity) {
+            throw new IllegalStateException("정원 초과로 인한 가입 거절");
+        }
+
+        group.setMemberCnt(currentMembers + 1);
+        group.setUpdatedAt(LocalDateTime.now());
+        groupRepository.save(group);
     }
 
     // 그룹 정보 수정 (이름/설명/비번/규칙)
