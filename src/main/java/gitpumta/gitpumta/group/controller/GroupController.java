@@ -113,4 +113,23 @@ public class GroupController {
         response.put("message", userIds != null? userIds : "등록된 사용자가 없음");
         return ResponseEntity.ok(response);
     }
+
+    // 특정 그룹 가입
+    @PostMapping(value = "/join")
+    public ResponseEntity<Map<String, Object>> joinGroup(
+            @RequestParam UUID groupId,
+            @RequestParam String password) {
+        groupService.joinGroup(groupId, password);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "그룹 가입 성공");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<Map<String, Object>> updateGroup(@RequestBody UpdateGroupRequestDTO dto) {
+        groupService.updateGroup(dto);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "그룹 정보 수정 완료");
+        return ResponseEntity.ok(response);
+    }
 }
