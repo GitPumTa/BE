@@ -1,5 +1,6 @@
 package gitpumta.gitpumta.group.bean;
 
+import gitpumta.gitpumta.group.bean.small.PasswordEncoderBean;
 import gitpumta.gitpumta.group.domain.GroupDAO;
 import gitpumta.gitpumta.group.domain.dto.CreateGroupRequestDTO;
 import gitpumta.gitpumta.group.domain.dto.GroupResponseDTO;
@@ -10,8 +11,10 @@ import java.util.UUID;
 
 @Component
 public class CreateGroupBean {
-    private GroupDAORepository repository;
-    public CreateGroupBean(GroupDAORepository repository) {
+    private final GroupDAORepository repository;
+    private final PasswordEncoderBean passwordEncoderBean;
+    public CreateGroupBean(GroupDAORepository repository, PasswordEncoderBean passwordEncoderBean) {
+        this.passwordEncoderBean = passwordEncoderBean;
         this.repository = repository;
     }
     public GroupDAO exec(CreateGroupRequestDTO createGroupRequestDTO){
@@ -19,7 +22,7 @@ public class CreateGroupBean {
                 .id(UUID.randomUUID())
                 .name(createGroupRequestDTO.getName())
                 .rule(createGroupRequestDTO.getRule())
-                .password(createGroupRequestDTO.getPassword())
+                .password(passwordEncoderBean.encode(createGroupRequestDTO.getPassword()))
                 .capacity(createGroupRequestDTO.getCapacity())
                 .description(createGroupRequestDTO.getDescription())
                 .build();
