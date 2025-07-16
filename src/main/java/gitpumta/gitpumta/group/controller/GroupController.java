@@ -1,9 +1,6 @@
 package gitpumta.gitpumta.group.controller;
 
-import gitpumta.gitpumta.group.domain.dto.CreateGroupRequestDTO;
-import gitpumta.gitpumta.group.domain.dto.UpdateGroupRequestDTO;
-import gitpumta.gitpumta.group.domain.dto.GroupListDTO;
-import gitpumta.gitpumta.group.domain.dto.GroupResponseDTO;
+import gitpumta.gitpumta.group.domain.dto.*;
 import gitpumta.gitpumta.group.service.GroupService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,9 +67,8 @@ public class GroupController {
 
     // 특정 그룹 가입
     @PostMapping(value = "/join")
-    public ResponseEntity<Map<String, Object>> joinGroup(@RequestParam UUID groupId,
-                                                         @RequestParam String password) {
-        groupService.joinGroup(groupId, password);
+    public ResponseEntity<Map<String, Object>> joinGroup(@RequestBody JoinGroupRequestDTO joinGroupRequestDTO) {
+        groupService.joinGroup(joinGroupRequestDTO);
         Map<String, Object> response = new HashMap<>();
         response.put("message", "그룹 가입 성공");
         return ResponseEntity.status(HttpStatus.OK).body(response);

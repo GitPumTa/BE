@@ -3,15 +3,12 @@ package gitpumta.gitpumta.group.service;
 import gitpumta.gitpumta.group.bean.CreateGroupBean;
 import gitpumta.gitpumta.group.bean.JoinGroupBean;
 import gitpumta.gitpumta.group.domain.GroupDAO;
-import gitpumta.gitpumta.group.domain.dto.CreateGroupRequestDTO;
-import gitpumta.gitpumta.group.domain.dto.UpdateGroupRequestDTO;
+import gitpumta.gitpumta.group.domain.dto.*;
 import gitpumta.gitpumta.group.repository.GroupDAORepository;
-import gitpumta.gitpumta.group.domain.dto.GroupListDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 // 그룹 조회 목록 기능 import
-import gitpumta.gitpumta.group.domain.dto.GroupResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,11 +87,11 @@ public class GroupService {
     }
 
     // 그룹 가입
-    public void joinGroup(UUID groupId, String inputPassword) {
-        GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
+    public void joinGroup(JoinGroupRequestDTO joinGroupRequestDTO) {
+        GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(joinGroupRequestDTO.getGroupId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다..."));
         // 비밀번호 비교
-        if (!joinGroupBean.exec(inputPassword, group.getPassword())) {
+        if (!joinGroupBean.exec(joinGroupRequestDTO.getPassword(), group.getPassword())) {
             throw new IllegalArgumentException("비밀번호 불일치");
         }
     }
