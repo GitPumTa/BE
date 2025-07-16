@@ -1,10 +1,13 @@
 package gitpumta.gitpumta.group.service;
 
 import gitpumta.gitpumta.group.bean.CreateGroupBean;
+import gitpumta.gitpumta.group.bean.JoinGroupBean;
 import gitpumta.gitpumta.group.domain.GroupDAO;
 import gitpumta.gitpumta.group.domain.dto.CreateGroupRequestDTO;
+import gitpumta.gitpumta.group.domain.dto.UpdateGroupRequestDTO;
 import gitpumta.gitpumta.group.repository.GroupDAORepository;
 import gitpumta.gitpumta.group.domain.dto.GroupListDTO;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 // 그룹 조회 목록 기능 import
@@ -20,10 +23,17 @@ public class GroupService {
 
     private final CreateGroupBean createGroupBean;
     private final GroupDAORepository groupRepository;
+    private final JoinGroupBean joinGroupBean;
+    private final PasswordEncoder passwordEncoder;
 
-    public GroupService(CreateGroupBean createGroupBean, GroupDAORepository groupRepository) {
+    public GroupService(CreateGroupBean createGroupBean,
+                        GroupDAORepository groupRepository,
+                        JoinGroupBean joinGroupBean,
+                        PasswordEncoder passwordEncoder ) {
         this.createGroupBean = createGroupBean;
         this.groupRepository = groupRepository;
+        this.joinGroupBean = joinGroupBean;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // 그룹 생성
@@ -77,5 +87,37 @@ public class GroupService {
                 .rule(group.getRule())
                 .memberCnt(memberCnt)
                 .build();
+    }
+
+    // 그룹 가입
+    public void joinGroup(UUID groupId, String inputPassword) {
+        GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다..."));
+        // 비밀번호 비교
+        if (!joinGroupBean.exec(inputPassword, group.getPassword())) {
+            throw new IllegalArgumentException("비밀번호 불일치");
+        }
+    }
+
+    // 그룹 정보 수정 (이름/설명/비번/규칙)
+    public void updateGroup(UpdateGroupRequestDTO dto) {
+        GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(dto.getGroupId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다."));
+
+        if (dto.getDescription() != null) {
+            group.setDescription(dto.getDescription());
+        }
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            group.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+        if (dto.getCapacity() != null && dto.getCapacity() > 0) {
+            group.setCapacity(dto.getCapacity());
+        }
+        if (dto.getRule() != null) {
+            group.setRule(dto.getRule());
+        }
+
+        group.setUpdatedAt(LocalDateTime.now());
+        groupRepository.save(group);
     }
 }
