@@ -11,7 +11,7 @@ public interface GroupMemberDAORepository extends JpaRepository<GroupMemberDAO, 
 
     List<GroupMemberDAO> findByGroupIdAndDeletedAtIsNull(UUID groupId);
     List<GroupMemberDAO> findByUserIdAndDeletedAtIsNull(UUID userId);
-    List<UUID> findAllByGroupIdAndDeletedAtIsNull(UUID groupId);
+    List<GroupMemberDAO> findAllByGroupIdAndDeletedAtIsNull(UUID groupId);
     boolean existsByGroupIdAndUserIdAndDeletedAtIsNull(UUID groupId, UUID userId);
     Optional<GroupMemberDAO> findByGroupIdAndUserIdAndDeletedAtIsNull(UUID groupId, UUID userId);
     int countByGroupId_IdAndDeletedAtIsNull(UUID groupId);

@@ -61,9 +61,15 @@ public class GroupController {
     public ResponseEntity<Map<String, Object>> getGroupDetail(@RequestParam UUID groupId) {
         GroupResponseDTO groupResponseDTO = groupService.getGroupDetail(groupId);
         Map<String,Object> requestMap = new HashMap<>();
-        requestMap.put("group",groupResponseDTO);
-
-        return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+        try {
+            requestMap.put("message", "상세 정보 조회 성공");
+            requestMap.put("group",groupResponseDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+        } catch (Exception e) {
+            requestMap.put("message", "상세 정보 조회 실패");
+            requestMap.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(requestMap);
+        }
     }
 
     // 특정 그룹 가입
@@ -88,8 +94,14 @@ public class GroupController {
     public ResponseEntity<Map<String, Object>> updateGroup(@RequestBody UpdateGroupRequestDTO dto) {
         groupService.updateGroup(dto);
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "그룹 정보 수정 완료");
-        return ResponseEntity.ok(response);
+        try {
+            response.put("message", "그룹 정보 수정 완료");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "그룹 정보 수정 실패");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
     // 맴버 정보
@@ -98,7 +110,7 @@ public class GroupController {
         List<UUID> userIds = groupService.getUserIdsInGroup(groupId);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("userIds", userIds);
+        response.put("message", userIds != null? userIds : "등록된 사용자가 없음");
         return ResponseEntity.ok(response);
     }
 }

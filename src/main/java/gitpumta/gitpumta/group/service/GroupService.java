@@ -102,7 +102,7 @@ public class GroupService {
         GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다."));
         if (!joinGroupBean.exec(inputPassword, group.getPassword())) {
-            throw new IllegalArgumentException("비밀번호 불일치");
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
         // 가입 정원 체크 로직
@@ -148,6 +148,9 @@ public class GroupService {
         if (dto.getRule() != null) {
             group.setRule(dto.getRule());
         }
+
+        int currentMemberCnt = groupMemberDAORepository.countByGroupId_IdAndDeletedAtIsNull(group.getId());
+        group.setMemberCnt(currentMemberCnt);
 
         group.setUpdatedAt(LocalDateTime.now());
         groupRepository.save(group);
