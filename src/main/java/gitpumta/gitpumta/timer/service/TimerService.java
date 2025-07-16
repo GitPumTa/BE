@@ -50,9 +50,9 @@ public class TimerService {
     public GetMemberTimersResponseDTO getMemberTimers(UUID accountId, UUID groupId) {
         GetMemberTimersResponseDTO memberTimersResponseDTO = new GetMemberTimersResponseDTO();
 
-        memberTimersResponseDTO.setMyMonitoringGroup(memberTimersBean.getMyMonitoringGroup(groupId));
+        memberTimersResponseDTO.setMyMonitoringGroup(memberTimersBean.getMyMonitoringGroup(accountId, groupId));
         memberTimersResponseDTO.setMyMonitoringGroupDescription(
-                memberTimersBean.getMonitoringGroupDescription(groupId));
+                memberTimersBean.getMonitoringGroupDescription(accountId, groupId));
         memberTimersResponseDTO.setMyRank(memberTimersBean.getMyRank(accountId, groupId));
         memberTimersResponseDTO.setMyName(memberTimersBean.getMyName(accountId));
         memberTimersResponseDTO.setDurationLeaders(memberTimersBean.getDurationLeaders(groupId));

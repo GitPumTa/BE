@@ -43,7 +43,7 @@ public class GroupDAO {
     private List<String> rule;
 
     @Column(name = "member_count", nullable = false)
-    private int memberCnt = 0;
+    private Integer memberCnt;
 
     // 기본 생성자, getter, setter 생략 (IDE로 자동 생성 권장)
 }
