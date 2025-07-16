@@ -36,9 +36,10 @@ public class UserController {
         log.info("조회 요청 UUID: {}", id);
         GetUserResponseDTO response = userService.getUser(id);
         return ResponseEntity.ok(response);
+    }
       
     @PostMapping(value = "/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginUserRequestDTO loginUserRequestDTO){
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginUserRequestDTO loginUserRequestDTO) {
         UserDAO userDAO = userService.login(loginUserRequestDTO);
         Map<String,Object> requestMap = new HashMap<>();
         requestMap.put("is_success", userDAO!=null? "로그인 성공":"로그인 실패");
