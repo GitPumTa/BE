@@ -53,7 +53,7 @@ public class TimerController {
     }
 
     @GetMapping(value = "/group")
-    public ResponseEntity<Map<String, Object>> getLeaders(@RequestParam("account_id") UUID accountId,
+    public ResponseEntity<Map<String, Object>> getLeaders(@RequestParam("account_id") String accountId,
                                                           @RequestParam("group_id") UUID groupId) {
         GetMemberTimersResponseDTO getMemberTimersResponseDTO = timerService.getMemberTimers(accountId, groupId);
         Map<String, Object> responseMap = new HashMap<>();
