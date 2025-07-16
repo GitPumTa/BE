@@ -1,6 +1,7 @@
 package gitpumta.gitpumta.group.controller;
 
 import gitpumta.gitpumta.group.domain.dto.CreateGroupRequestDTO;
+import gitpumta.gitpumta.group.domain.dto.UpdateGroupRequestDTO;
 import gitpumta.gitpumta.group.domain.dto.GroupListDTO;
 import gitpumta.gitpumta.group.domain.dto.GroupResponseDTO;
 import gitpumta.gitpumta.group.service.GroupService;
@@ -65,5 +66,23 @@ public class GroupController {
         requestMap.put("group",groupResponseDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+    }
+
+    // 특정 그룹 가입
+    @PostMapping(value = "/join")
+    public ResponseEntity<Map<String, Object>> joinGroup(@RequestParam UUID groupId,
+                                                         @RequestParam String password) {
+        groupService.joinGroup(groupId, password);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "그룹 가입 성공");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<Map<String, Object>> updateGroup(@RequestBody UpdateGroupRequestDTO dto) {
+        groupService.updateGroup(dto);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "그룹 정보 수정 완료");
+        return ResponseEntity.ok(response);
     }
 }
