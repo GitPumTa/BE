@@ -35,7 +35,7 @@ public class TimerController {
 
             return ResponseEntity.status(HttpStatus.OK).body(responseMap);
         } catch (Exception e) {
-            responseMap.put("message", "repo list를 로드하는데 실패했습니다.");
+            responseMap.put("message", "repo list 를 로드하는데 실패했습니다.");
             responseMap.put("error", e.getMessage());
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
