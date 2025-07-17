@@ -24,17 +24,15 @@ public class MemberTimersBean {
     private final TimerDAORepository timerDAORepository;
     private final GroupDAORepository groupDAORepository;
     private final UserDAORepository userDAORepository;
-    private final PlannerDAORepository plannerDAORepository;
     private final CommitDAORepository commitDAORepository;
     private final GroupMemberDAORepository groupMemberDAORepository;
 
     public MemberTimersBean(TimerDAORepository timerDAORepository, GroupDAORepository groupDAORepository,
-                            UserDAORepository userDAORepository, PlannerDAORepository plannerDAORepository,
-                            CommitDAORepository commitDAORepository, GroupMemberDAORepository groupMemberDAORepository) {
+                            UserDAORepository userDAORepository, CommitDAORepository commitDAORepository,
+                            GroupMemberDAORepository groupMemberDAORepository) {
         this.timerDAORepository = timerDAORepository;
         this.groupDAORepository = groupDAORepository;
         this.userDAORepository = userDAORepository;
-        this.plannerDAORepository = plannerDAORepository;
         this.commitDAORepository = commitDAORepository;
         this.groupMemberDAORepository = groupMemberDAORepository;
     }
@@ -148,15 +146,8 @@ public class MemberTimersBean {
         Map<UUID, Integer> commitCountMap = new HashMap<>();
 
         for (UUID userId : userIds) {
-            List<PlannerDAO> planners = plannerDAORepository.findByUserId(userId);
-
-            int totalCommits = 0;
-
-            for (PlannerDAO planner : planners) {
-                int commitCount = commitDAORepository.countByPlannerIdAndCreatedAtBetweenAndDeletedAtIsNull(
-                        planner.getId(), startOfDay, endOfDay);
-                totalCommits += commitCount;
-            }
+            int totalCommits = commitDAORepository.countByUserIdAndTimeBetweenAndDeletedAtIsNull(
+                    userId, startOfDay, endOfDay);
 
             commitCountMap.put(userId, totalCommits);
         }
