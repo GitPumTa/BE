@@ -284,4 +284,40 @@ public class GroupService {
                 })
                 .collect(Collectors.toList());
     }
+
+    // 그룹 DROP
+    public Map<String, Object> deleteGroup(UUID groupId, UUID requesterId) {
+        GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹"));
+
+        // 그룹장 여부 확인
+        Optional<GroupMemberDAO> firstMemberOpt =
+                groupMemberDAORepository.findFirstByGroupIdAndDeletedAtIsNullOrderByJoinedAtAsc(groupId);
+
+        boolean isLeader = firstMemberOpt
+                .map(member -> member.getUserId().equals(requesterId))
+                .orElse(false);
+
+        if (!isLeader) {
+            throw new IllegalArgumentException("그룹 삭제 권한 X");
+        }
+
+        // 1. 그룹 soft delete
+        group.setDeletedAt(LocalDateTime.now());
+        groupRepository.save(group);
+
+        // 2. 그룹에 속한 멤버 모두 soft delete
+        List<GroupMemberDAO> members = groupMemberDAORepository.findByGroupIdAndDeletedAtIsNull(groupId);
+        for (GroupMemberDAO m : members) {
+            m.setDeletedAt(LocalDateTime.now());
+        }
+        groupMemberDAORepository.saveAll(members);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "GROUP DROP COMPLETE!!!");
+        response.put("groupId", groupId);
+        response.put("memberCount", members.size());
+        return response;
+    }
+
 }
