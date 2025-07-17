@@ -104,6 +104,7 @@ public class GroupController {
         }
     }
 
+    // 그룹에 가입된 맴버 정보
     @GetMapping(value = "/membersInfo")
     public ResponseEntity<Map<String, Object>> getGroupMemberDetail(@RequestParam UUID groupId) {
         Map<String, Object> response = new HashMap<>();
@@ -119,5 +120,32 @@ public class GroupController {
         }
     }
 
+    // 그룹장 권한으로 맴버 추방
+    @PostMapping("/expel")
+    public ResponseEntity<Map<String, Object>> expelMember(@RequestBody KickOutRequestDTO dto) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Map<String, Object> result = groupService.expelMember(dto.getGroupId(), dto.getRequesterId(), dto.getTargetUserId());
 
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            response.put("message", "멤버 추방 실패");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
+    // 사용자가 스스로 그룹 탈퇴
+    @PostMapping("/leave")
+    public ResponseEntity<Map<String, Object>> leaveGroup(@RequestBody LeaveGroupRequestDTO dto) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Map<String, Object> result = groupService.leaveGroup(dto.getGroupId(), dto.getUserId());
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            response.put("message", "그룹 탈퇴 실패");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 }
