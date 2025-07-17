@@ -8,7 +8,7 @@ import java.util.UUID;
 public class CreatePlannerRequestDTO {
 //    private UUID id;
 
-//    private UUID user_id;
+    private UUID user_id;
 
     private String name;
 
