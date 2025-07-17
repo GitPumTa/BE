@@ -52,7 +52,7 @@ public class MemberTimersBean {
         return group.getDescription();
     }
 
-    // 그룹 내 나의 랭킹 계산
+    // 그룹 내 나의 랭킹(커밋 수 기준) 계산
     public int getMyRank(UUID accountId, UUID groupId) {
         // groupId로 같은 그룹 속한 userId 리스트 가져오기
         List<UUID> userIds = groupMemberDAORepository
@@ -66,20 +66,27 @@ public class MemberTimersBean {
         LocalDateTime startOfDay = today.atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
 
-        List<TimerDAO> timers = timerDAORepository
-                .findByUserIdInAndCreatedAtBetweenAndDeletedAtIsNullOrderByTotalDurationDesc(
-                        userIds, startOfDay, endOfDay);
-
-        int myRank = 0;
-        // 정렬된 리스트에서 해당 유저 랭킹 찾기
-        for (int i = 0; i < timers.size(); i++) {
-            if (timers.get(i).getUserId().equals(accountId)) {
-                myRank = i + 1;
-                break;
-            }
+        Map<UUID, Integer> commitCountMap = new HashMap<>();
+        for (UUID userId : userIds) {
+            int count = commitDAORepository
+                    .countByUserIdAndTimeBetweenAndDeletedAtIsNull(userId, startOfDay, endOfDay);
+            commitCountMap.put(userId, count);
         }
 
-        return myRank;
+        List<Map.Entry<UUID, Integer>> sorted = commitCountMap.entrySet().stream()
+                .sorted(Map.Entry.<UUID, Integer>comparingByValue().reversed())
+                .toList();
+
+        int rank = 1;
+        for (Map.Entry<UUID, Integer> e : sorted) {
+            if (e.getKey().equals(accountId)) {
+                return rank;
+            }
+            rank++;
+        }
+
+        // 그룹에 속해 있지만 커밋 기록이 없으면 0 반환
+        return 0;
     }
 
     // 내 이름 가져오기 -> 유저 테이블 참조

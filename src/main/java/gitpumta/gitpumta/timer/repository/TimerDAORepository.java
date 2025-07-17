@@ -17,12 +17,4 @@ public interface TimerDAORepository extends JpaRepository<TimerDAO, UUID> {
 
     List<TimerDAO> findByUserIdInAndDeletedAtIsNullOrderByTotalDurationDesc(
             List<UUID> userIds);
-
-    List<TimerDAO> findByUserIdInAndCreatedAtBetweenAndDeletedAtIsNullOrderByTotalDurationDesc(
-            List<UUID> userIds,
-            LocalDateTime startOfDay,
-            LocalDateTime endOfDay
-    );
-
-    List<TimerDAO> findByUserIdInAndDeletedAtIsNull(List<UUID> userIds);
 }
