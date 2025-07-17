@@ -8,6 +8,8 @@ import gitpumta.gitpumta.group.domain.GroupMemberDAO;
 import gitpumta.gitpumta.group.domain.dto.*;
 import gitpumta.gitpumta.group.repository.GroupMemberDAORepository;
 import gitpumta.gitpumta.group.repository.GroupDAORepository;
+import gitpumta.gitpumta.user.domain.UserDAO;
+import gitpumta.gitpumta.user.repository.UserDAORepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,26 +30,46 @@ public class GroupService {
     private final PasswordEncoder passwordEncoder;
     private final GroupMemberDAORepository groupMemberDAORepository;
     private final GetGroupMembersBean getGroupMembersBean;
+    private final UserDAORepository userDAORepository;
 
     public GroupService(CreateGroupBean createGroupBean,
                         GroupDAORepository groupRepository,
                         JoinGroupBean joinGroupBean,
                         PasswordEncoder passwordEncoder,
                         GroupMemberDAORepository groupMemberDAORepository,
-                        GetGroupMembersBean getGroupMembersBean) {
+                        GetGroupMembersBean getGroupMembersBean,
+                        UserDAORepository userDAORepository) {
         this.createGroupBean = createGroupBean;
         this.groupRepository = groupRepository;
         this.joinGroupBean = joinGroupBean;
         this.passwordEncoder = passwordEncoder;
         this.groupMemberDAORepository = groupMemberDAORepository;
         this.getGroupMembersBean = getGroupMembersBean;
+        this.userDAORepository = userDAORepository;
     }
 
     // 그룹 생성
     public UUID createGroup(CreateGroupRequestDTO createGroupRequestDTO) {
+
+        // 그룹 생성
         GroupDAO groupDAO = createGroupBean.exec(createGroupRequestDTO);
         groupDAO.setCreatedAt(LocalDateTime.now());
         groupRepository.save(groupDAO);
+
+        // 그룹 생성자(본인)를 멤버로 자동 등록
+        UserDAO user = userDAORepository.findById(createGroupRequestDTO.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
+
+        GroupMemberDAO member = GroupMemberDAO.builder()
+                .id(UUID.randomUUID())
+                .groupId(groupDAO.getId())
+                .userId(user.getId())
+                .joinedAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        groupMemberDAORepository.save(member);
+
         return groupDAO.getId();
     }
 
@@ -124,7 +146,7 @@ public class GroupService {
         // 가입 처리
         GroupMemberDAO member = GroupMemberDAO.builder()
                 .id(UUID.randomUUID())
-                .groupId(groupId)   // GroupDAO 객체
+                .groupId(groupId)
                 .userId(userId)
                 .joinedAt(LocalDateTime.now())
                 .build();
