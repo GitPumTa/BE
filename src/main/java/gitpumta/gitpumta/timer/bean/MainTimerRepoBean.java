@@ -26,7 +26,7 @@ public class MainTimerRepoBean {
             repoDTO.setTitle(planner.getName());
             repoDTO.setSubtitle(planner.getDescription());
             repoDTO.setRepo_address(planner.getRepository_link());
-            //repoDTO.setDuration(planner.getDuration());
+            repoDTO.setDuration(0);//repoDTO.setDuration(planner.getDuration());
             return repoDTO;
         }).collect(Collectors.toList());
     }

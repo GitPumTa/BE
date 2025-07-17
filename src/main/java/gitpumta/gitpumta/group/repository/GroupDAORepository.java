@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface GroupDAORepository extends JpaRepository<GroupDAO, UUID> {
     List<GroupDAO> findByDeletedAtIsNull();
+    List<GroupDAO> findByIdInAndDeletedAtIsNull(List<UUID> groupIds);
     List<GroupDAO> findByNameContainingAndDeletedAtIsNull(String keyword);
     List<GroupDAO> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndDeletedAtIsNull(String name, String description);
     Optional<GroupDAO> findByIdAndDeletedAtIsNull(UUID id);

@@ -239,4 +239,49 @@ public class GroupService {
         result.put("groupId", groupId);
         return result;
     }
+
+    // 사용자가 그룹에서 본인의 정보 (그룹장/일반 맴버 여부) 조회
+    public GroupMemberRoleDTO getGroupMemberStatus(UUID groupId, UUID userId) {
+        GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 그룹이 존재하지 않음"));
+
+        GroupMemberDAO member = groupMemberDAORepository.findByGroupIdAndUserIdAndDeletedAtIsNull(groupId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("이 사용자는 그룹 구성원이 아님"));
+
+        Optional<GroupMemberDAO> firstMemberOpt = groupMemberDAORepository
+                .findFirstByGroupIdAndDeletedAtIsNullOrderByJoinedAtAsc(groupId);
+
+        boolean isLeader = firstMemberOpt
+                .map(first -> first.getUserId().equals(userId))
+                .orElse(false);
+
+        return GroupMemberRoleDTO.builder()
+                .userId(userId)
+                .groupId(groupId)
+                .role(isLeader ? "LEADER" : "MEMBER")
+                .joinedAt(member.getJoinedAt())
+                .build();
+    }
+
+    // 내가 가입한 그룹 목록만 반환
+    public List<GroupListDTO> getMyGroups(UUID userId) {
+        List<GroupMemberDAO> myMemberships = groupMemberDAORepository.findByUserIdAndDeletedAtIsNull(userId);
+        List<UUID> groupIds = myMemberships.stream()
+                .map(GroupMemberDAO::getGroupId)
+                .collect(Collectors.toList());
+        List<GroupDAO> groups = groupRepository.findByIdInAndDeletedAtIsNull(groupIds);
+
+        return groups.stream()
+                .map(group -> {
+                    int memberCnt = groupMemberDAORepository.countByGroupIdAndDeletedAtIsNull(group.getId());
+                    return GroupListDTO.builder()
+                            .id(group.getId())
+                            .name(group.getName())
+                            .description(group.getDescription())
+                            .capacity(group.getCapacity())
+                            .memberCnt(memberCnt)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
 }

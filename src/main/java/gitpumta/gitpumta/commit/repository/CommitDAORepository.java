@@ -15,5 +15,6 @@ public interface CommitDAORepository extends JpaRepository<CommitDAO, UUID> {
     int countByPlannerIdAndTimeBetween(UUID plannerId, LocalDateTime timeAfter, LocalDateTime timeBefore);
 
     int countByPlannerIdAndCreatedAtBetweenAndDeletedAtIsNull(UUID plannerId, LocalDateTime createdAtAfter, LocalDateTime createdAtBefore);
-
+    int countByUserIdAndTimeBetweenAndDeletedAtIsNull(
+            UUID userId, LocalDateTime startOfDay, LocalDateTime endOfDay);
 }
