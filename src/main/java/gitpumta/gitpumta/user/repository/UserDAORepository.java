@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
@@ -15,4 +16,5 @@ public interface UserDAORepository extends JpaRepository<UserDAO, UUID> {
     Optional<UserDAO> findAllById(UUID id);
     Optional<UserDAO> findById(UUID userId);
     UserDAO findByAccountId(String accountId);
+    Optional<UserDAO> findByIdAndDeletedAtIsNull(UUID id);
 }
