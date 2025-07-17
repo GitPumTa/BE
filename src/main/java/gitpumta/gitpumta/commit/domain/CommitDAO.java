@@ -34,8 +34,8 @@ public class CommitDAO {
     @Column(name = "message", columnDefinition = "TEXT", nullable = false)
     private String message;
 
-    @Column(name = "committed_at", nullable = false)
-    private LocalDateTime committedAt;
+    @Column(name = "time", nullable = false)
+    private LocalDateTime time;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
