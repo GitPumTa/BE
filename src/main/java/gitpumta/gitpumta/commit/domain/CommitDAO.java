@@ -23,14 +23,17 @@ public class CommitDAO {
     @Column(name = "planner_id", columnDefinition = "BINARY(16)")
     private UUID plannerId;
 
-    @Column(nullable = false)
-    private String hash;
-
-    @Column
-    private String message;
-
-    @Column(name = "committed_at")
-    private LocalDateTime committedAt;
+    @Column(name = "commit_count")
+    private Integer commitCount;
+//
+//    @Column(nullable = false)
+//    private String hash;
+//
+//    @Column
+//    private String message;
+//
+//    @Column(name = "committed_at")
+//    private LocalDateTime committedAt;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
