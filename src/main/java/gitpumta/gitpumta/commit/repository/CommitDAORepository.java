@@ -9,6 +9,11 @@ import java.util.UUID;
 
 @Repository
 public interface CommitDAORepository extends JpaRepository<CommitDAO, UUID> {
-    int countByPlannerIdAndCreatedAtBetweenAndDeletedAtIsNull(
-            UUID plannerId, LocalDateTime startOfDay, LocalDateTime endOfDay);
+    CommitDAO findTop1ByPlannerIdOrderByTimeDesc(UUID plannerId);
+    CommitDAO findByPlannerId(UUID plannerId);
+
+    int countByPlannerIdAndTimeBetween(UUID plannerId, LocalDateTime timeAfter, LocalDateTime timeBefore);
+
+    int countByPlannerIdAndCreatedAtBetweenAndDeletedAtIsNull(UUID plannerId, LocalDateTime createdAtAfter, LocalDateTime createdAtBefore);
+
 }
