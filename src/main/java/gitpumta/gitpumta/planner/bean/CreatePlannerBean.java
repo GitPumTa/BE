@@ -9,14 +9,16 @@ import java.util.UUID;
 
 @Component
 public class CreatePlannerBean {
-    private PlannerDAORepository repository;
+    private final PlannerDAORepository repository;
+
     public CreatePlannerBean(PlannerDAORepository repository) {
         this.repository = repository;
     }
+
     public PlannerDAO exec(CreatePlannerRequestDTO createPlannerRequestDTO) {
         PlannerDAO planner = PlannerDAO.builder()
                 .id(UUID.randomUUID())
-                //.userId(createPlannerRequestDTO.getUser_id())
+                .userId(UUID.randomUUID())
                 .name(createPlannerRequestDTO.getName())
                 .description(createPlannerRequestDTO.getDescription())
                 .repository_link(createPlannerRequestDTO.getRepository_link())

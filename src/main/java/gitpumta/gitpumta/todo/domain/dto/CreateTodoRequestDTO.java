@@ -17,5 +17,7 @@ public class CreateTodoRequestDTO {
 
     private String status;
 
+    private String description;
+
     private LocalDateTime dueDate;
 }

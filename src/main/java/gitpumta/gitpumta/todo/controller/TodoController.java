@@ -17,7 +17,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "/todo")
 @CrossOrigin
-
 public class TodoController {
     private final TodoService todoService;
     private final RestClient.Builder builder;

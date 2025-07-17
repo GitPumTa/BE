@@ -20,7 +20,6 @@ public class TodoService {
     private final CreateTodoBean createTodoBean;
     private TodoDAOReopsitory todoRepository;
 
-    @Autowired
     public TodoService(CreateTodoBean createTodoBean, TodoDAOReopsitory todoRepository) {
         this.createTodoBean = createTodoBean;
         this.todoRepository = todoRepository;
@@ -28,6 +27,7 @@ public class TodoService {
 
     public UUID createTodo(CreateTodoRequestDTO createTodoRequestDTO){
         TodoDAO todoDAO = createTodoBean.exec(createTodoRequestDTO);
+        todoRepository.save(todoDAO);
         return todoDAO.getId();
     }
 
