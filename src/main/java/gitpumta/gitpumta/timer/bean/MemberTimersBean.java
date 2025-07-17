@@ -62,15 +62,20 @@ public class MemberTimersBean {
                 .toList();
 
         // 해당 userId 리스트에 대해 TimerDAO에서 totalDuration 내림차순 정렬
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
+
         List<TimerDAO> timers = timerDAORepository
-                .findByUserIdInAndDeletedAtIsNullOrderByTotalDurationDesc(userIds);
+                .findByUserIdInAndCreatedAtBetweenAndDeletedAtIsNullOrderByTotalDurationDesc(
+                        userIds, startOfDay, endOfDay);
 
-        int myRank = 1;
-
+        int myRank = 0;
         // 정렬된 리스트에서 해당 유저 랭킹 찾기
         for (int i = 0; i < timers.size(); i++) {
             if (timers.get(i).getUserId().equals(accountId)) {
                 myRank = i + 1;
+                break;
             }
         }
 
