@@ -2,6 +2,7 @@ package gitpumta.gitpumta.timer.bean;
 
 import gitpumta.gitpumta.commit.repository.CommitDAORepository;
 import gitpumta.gitpumta.group.domain.GroupDAO;
+import gitpumta.gitpumta.group.domain.GroupMemberDAO;
 import gitpumta.gitpumta.group.repository.GroupDAORepository;
 import gitpumta.gitpumta.group.repository.GroupMemberDAORepository;
 import gitpumta.gitpumta.planner.domain.PlannerDAO;
@@ -23,17 +24,15 @@ public class MemberTimersBean {
     private final TimerDAORepository timerDAORepository;
     private final GroupDAORepository groupDAORepository;
     private final UserDAORepository userDAORepository;
-    private final PlannerDAORepository plannerDAORepository;
     private final CommitDAORepository commitDAORepository;
     private final GroupMemberDAORepository groupMemberDAORepository;
 
     public MemberTimersBean(TimerDAORepository timerDAORepository, GroupDAORepository groupDAORepository,
-                            UserDAORepository userDAORepository, PlannerDAORepository plannerDAORepository,
-                            CommitDAORepository commitDAORepository, GroupMemberDAORepository groupMemberDAORepository) {
+                            UserDAORepository userDAORepository, CommitDAORepository commitDAORepository,
+                            GroupMemberDAORepository groupMemberDAORepository) {
         this.timerDAORepository = timerDAORepository;
         this.groupDAORepository = groupDAORepository;
         this.userDAORepository = userDAORepository;
-        this.plannerDAORepository = plannerDAORepository;
         this.commitDAORepository = commitDAORepository;
         this.groupMemberDAORepository = groupMemberDAORepository;
     }
@@ -59,7 +58,7 @@ public class MemberTimersBean {
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
                 .stream()
-                .map(member -> member.getUserId())
+                .map(GroupMemberDAO::getUserId)
                 .toList();
 
         // 해당 userId 리스트에 대해 TimerDAO에서 totalDuration 내림차순 정렬
@@ -92,7 +91,7 @@ public class MemberTimersBean {
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
                 .stream()
-                .map(member -> member.getUserId())
+                .map(GroupMemberDAO::getUserId)
                 .toList();
 
         // 해당 userId 리스트에 대해 TimerDAO에서 totalDuration 내림차순 정렬
@@ -128,7 +127,7 @@ public class MemberTimersBean {
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
                 .stream()
-                .map(member -> member.getUserId())
+                .map(GroupMemberDAO::getUserId)
                 .toList();
 
         // 유저 별 모든 플래너 -> 플래너에 연결된 커밋 검색(그중에서 오늘자)
@@ -147,15 +146,8 @@ public class MemberTimersBean {
         Map<UUID, Integer> commitCountMap = new HashMap<>();
 
         for (UUID userId : userIds) {
-            List<PlannerDAO> planners = plannerDAORepository.findByUserId(userId);
-
-            int totalCommits = 0;
-
-            for (PlannerDAO planner : planners) {
-                int commitCount = commitDAORepository.countByPlannerIdAndCreatedAtBetweenAndDeletedAtIsNull(
-                        planner.getId(), startOfDay, endOfDay);
-                totalCommits += commitCount;
-            }
+            int totalCommits = commitDAORepository.countByUserIdAndTimeBetweenAndDeletedAtIsNull(
+                    userId, startOfDay, endOfDay);
 
             commitCountMap.put(userId, totalCommits);
         }

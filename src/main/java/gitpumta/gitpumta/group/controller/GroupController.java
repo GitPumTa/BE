@@ -165,4 +165,21 @@ public class GroupController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
+    // 내가 가입한 그룹 목록만 반환
+    @GetMapping("/myGroupList")
+    public ResponseEntity<?> getMyGroups(@RequestParam UUID userId) {
+
+        List<GroupListDTO> groupList = groupService.getMyGroups(userId);
+        Map<String, Object> response = new HashMap<>();
+
+        if (groupList.isEmpty()) {
+            response.put("message", "가입한 그룹이 없음");
+        } else {
+            response.put("message", "내가 가입한 그룹 목록");
+        }
+        response.put("groups", groupList);
+
+        return ResponseEntity.ok(response);
+    }
 }
