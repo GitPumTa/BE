@@ -1,8 +1,10 @@
 package gitpumta.gitpumta.timer.bean;
 
+import gitpumta.gitpumta.timer.bean.samll.UpdatePlannerBean;
 import gitpumta.gitpumta.timer.domain.TimerDAO;
 import gitpumta.gitpumta.timer.domain.dto.TimerRequestDTO;
 import gitpumta.gitpumta.timer.repository.TimerDAORepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.util.UUID;
 @Component
 public class StopTimerBean {
     private final TimerDAORepository timerDAORepository;
+    @Autowired
+    private UpdatePlannerBean updatePlannerBean;
 
     public StopTimerBean(TimerDAORepository timerDAORepository) {
         this.timerDAORepository = timerDAORepository;
@@ -32,5 +36,8 @@ public class StopTimerBean {
         timer.setTotalDuration(totalDuration);
 
         timerDAORepository.save(timer);
+
+        // duration 수정
+        updatePlannerBean.updateDurations(timerRequestDTO.getRepos(), now);
     }
 }

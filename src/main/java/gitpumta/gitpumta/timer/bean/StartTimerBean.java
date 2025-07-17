@@ -1,8 +1,10 @@
 package gitpumta.gitpumta.timer.bean;
 
+import gitpumta.gitpumta.timer.bean.samll.UpdatePlannerBean;
 import gitpumta.gitpumta.timer.domain.TimerDAO;
 import gitpumta.gitpumta.timer.domain.dto.TimerRequestDTO;
 import gitpumta.gitpumta.timer.repository.TimerDAORepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.util.UUID;
 @Component
 public class StartTimerBean {
     private final TimerDAORepository timerDAORepository;
+    @Autowired
+    private UpdatePlannerBean updatePlannerBean;
 
     public StartTimerBean(TimerDAORepository timerDAORepository) {
         this.timerDAORepository = timerDAORepository;
@@ -44,5 +48,6 @@ public class StartTimerBean {
         timerDAORepository.save(timer);
 
         // repo 접근 여기서 해야할듯 (각 repo당 duration 저장 등)
+        updatePlannerBean.updateDurations(timerRequestDTO.getRepos(), now);
     }
 }
