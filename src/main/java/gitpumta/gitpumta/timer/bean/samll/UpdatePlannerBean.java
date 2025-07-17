@@ -21,7 +21,7 @@ public class UpdatePlannerBean {
 
         for (TimerRequestDTO.RepoDTO repo : repos) {
             plannerDAORepository.findById(repo.getId()).ifPresent(planner -> {
-                //planner.setDuration(repo.getDuration());
+                planner.setDuration(repo.getDuration());
                 planner.setUpdatedAt(now);
                 plannerDAORepository.save(planner);
             });

@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class PlannerService {
     private final CreatePlannerBean createPlannerBean;
-    private PlannerDAORepository plannerRepository;
+    private final PlannerDAORepository plannerRepository;
 
     public PlannerService(CreatePlannerBean createPlannerBean, PlannerDAORepository plannerRepository) {
         this.createPlannerBean = createPlannerBean;
@@ -40,6 +40,7 @@ public class PlannerService {
                         .name(planner.getName())
                         .description(planner.getDescription())
                         .repository_link(planner.getRepository_link())
+                        .duration(planner.getDuration())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -53,6 +54,7 @@ public class PlannerService {
                         .name(planner.getName())
                         .description(planner.getDescription())
                         .repository_link(planner.getRepository_link())
+                        .duration(planner.getDuration())
                         .build())
                 .orElseThrow(() -> new IllegalArgumentException("해당 Todo 없음"));
     }

@@ -22,6 +22,7 @@ public class CreatePlannerBean {
                 .name(createPlannerRequestDTO.getName())
                 .description(createPlannerRequestDTO.getDescription())
                 .repository_link(createPlannerRequestDTO.getRepository_link())
+                .duration(0)
                 .build();
         return repository.save(planner);
     }

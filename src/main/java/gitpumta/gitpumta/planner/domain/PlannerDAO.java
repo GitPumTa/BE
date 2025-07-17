@@ -38,6 +38,9 @@ public class PlannerDAO {
     @Column(name = "repository_link", length = 255)
     private String repository_link;
 
+    @Column
+    private int duration;
+
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
