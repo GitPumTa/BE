@@ -1,7 +1,10 @@
 package gitpumta.gitpumta.group.domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.data.annotation.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.*;
 import java.util.*;
@@ -10,7 +13,7 @@ import java.util.*;
 @Setter
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class GroupDAO {
 
@@ -30,9 +33,11 @@ public class GroupDAO {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 

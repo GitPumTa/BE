@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.annotation.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.*;
 import java.util.*;
@@ -14,6 +15,7 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class UserDAO {
 
@@ -49,13 +51,5 @@ public class UserDAO {
 
     @Column(name = "total_commit")
     private Integer totalCommit;
-
-    public Integer getTotalDuration() {
-        return totalDuration;
-    }
-
-    public Integer getTotalCommit() {
-        return totalCommit;
-    }
     // Getters, Setters, Constructors
 }
