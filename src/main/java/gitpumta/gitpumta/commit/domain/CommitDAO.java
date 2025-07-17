@@ -20,8 +20,11 @@ public class CommitDAO {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(name = "planner_id", columnDefinition = "BINARY(16)")
+    @Column(name = "planner_id", columnDefinition = "BINARY(16)", nullable = false)
     private UUID plannerId;
+
+    @Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+    private UUID userId;
 
     @Column(name = "commit_count")
     private Integer commitCount;
