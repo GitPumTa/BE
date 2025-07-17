@@ -263,4 +263,25 @@ public class GroupService {
                 .build();
     }
 
+    // 내가 가입한 그룹 목록만 반환
+    public List<GroupListDTO> getMyGroups(UUID userId) {
+        List<GroupMemberDAO> myMemberships = groupMemberDAORepository.findByUserIdAndDeletedAtIsNull(userId);
+        List<UUID> groupIds = myMemberships.stream()
+                .map(GroupMemberDAO::getGroupId)
+                .collect(Collectors.toList());
+        List<GroupDAO> groups = groupRepository.findByIdInAndDeletedAtIsNull(groupIds);
+
+        return groups.stream()
+                .map(group -> {
+                    int memberCnt = groupMemberDAORepository.countByGroupIdAndDeletedAtIsNull(group.getId());
+                    return GroupListDTO.builder()
+                            .id(group.getId())
+                            .name(group.getName())
+                            .description(group.getDescription())
+                            .capacity(group.getCapacity())
+                            .memberCnt(memberCnt)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
 }
