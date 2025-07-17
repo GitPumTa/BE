@@ -18,12 +18,17 @@ public class LoginBean {
         this.passwordEncoder = passwordEncoder;
     }
     public UserDAO exec(LoginUserRequestDTO loginUserRequestDTO){
-        Optional<UserDAO> user = userDAORepository.findByAccountId(loginUserRequestDTO.getAccountId());
-        boolean check = passwordEncoder.matches(loginUserRequestDTO.getPassword(), user.get().getPassword());
-        if(check){
-            return user.get();
-        }else {
+        UserDAO user = userDAORepository.findByAccountId(loginUserRequestDTO.getAccountId());
+        if (user == null) {
             return null;
+        }else{
+            boolean check = passwordEncoder.matches(loginUserRequestDTO.getPassword(), user.getPassword());
+            if(check){
+                return user;
+            }else {
+                return null;
+            }
         }
+
     }
 }

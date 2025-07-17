@@ -17,7 +17,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "/todo")
 @CrossOrigin
-
 public class TodoController {
     private final TodoService todoService;
     private final RestClient.Builder builder;
@@ -38,12 +37,12 @@ public class TodoController {
     }
 
     @GetMapping(value = "/list/{user_id}")
-    public ResponseEntity<?> getTodoListByUserid(@PathVariable String user_id) {
+    public ResponseEntity<?> getTodoListByUserid(@PathVariable UUID user_id) {
         return ResponseEntity.ok(todoService.getAllTodosByUserId(user_id));
     }
 
     @GetMapping(value = "/list/{user_id}/{title}")
-    public ResponseEntity<?> getTodoByUserIdAndTitle(@PathVariable String user_id, @PathVariable String title) {
+    public ResponseEntity<?> getTodoByUserIdAndTitle(@PathVariable UUID user_id, @PathVariable String title) {
         return ResponseEntity.ok(todoService.getTodoByUserIdAndTitle(user_id, title));
     }
 }

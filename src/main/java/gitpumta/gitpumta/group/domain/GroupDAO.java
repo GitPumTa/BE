@@ -16,7 +16,7 @@ public class GroupDAO {
 
     @Id
     //@Column(name = "id", columnDefinition = "BINARY(16)")
-    @Column(length = 36)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column(nullable = false, length = 100)

@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 public class UpdateTodoRequestDTO {
     private UUID id;
-    private String user_id;
+    private UUID user_id;
     private String description;
     private Integer capacity;
     private String status;

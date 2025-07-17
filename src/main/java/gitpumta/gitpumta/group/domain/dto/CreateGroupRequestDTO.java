@@ -9,7 +9,8 @@ import java.util.List;
 
 @Data
 public class CreateGroupRequestDTO {
-//    private UUID id;
+
+    private UUID userId;
 
     private String name;
 

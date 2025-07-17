@@ -17,7 +17,9 @@ public class SignupBean {
         this.userDAORepository = userDAORepository;
     }
     public UserDAO exec(SignUpUserDTO signUpUserDTO) {
-        UserDAO userDAO = UserDAO.builder()
+        UserDAO userDAO = userDAORepository.findByAccountId(signUpUserDTO.getAccountId());
+        if (userDAO != null)    return null;
+        userDAO = UserDAO.builder()
                 .id(UUID.randomUUID())
                 .accountId(signUpUserDTO.getAccountId())
                 .password(passwordEncoder.encode(signUpUserDTO.getPassword()))

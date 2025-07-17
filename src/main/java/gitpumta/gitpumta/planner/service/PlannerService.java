@@ -20,18 +20,20 @@ public class PlannerService {
     private final CreatePlannerBean createPlannerBean;
     private PlannerDAORepository plannerRepository;
 
-    @Autowired
     public PlannerService(CreatePlannerBean createPlannerBean, PlannerDAORepository plannerRepository) {
         this.createPlannerBean = createPlannerBean;
         this.plannerRepository = plannerRepository;
     }
+
+    //플래너 생성
     public UUID createPlanner(CreatePlannerRequestDTO createPlannerRequestDTO) {
         PlannerDAO plannerDAO = createPlannerBean.exec(createPlannerRequestDTO);
+        plannerRepository.save(plannerDAO);
         return plannerDAO.getId();
     }
 
     // 플래너 유저기반 조회
-    public List<PlannerResponseDTO> getAllPlannersByUserId(String userId) {
+    public List<PlannerResponseDTO> getAllPlannersByUserId(UUID userId) {
         return plannerRepository.findByUserId(userId)
                 .stream()
                 .map(planner -> PlannerResponseDTO.builder()
@@ -43,7 +45,7 @@ public class PlannerService {
     }
 
     // 플래너 유저기반 상세조회
-    public PlannerResponseDTO getPlannerByUserIdAndName(String userId, String name) {
+    public PlannerResponseDTO getPlannerByUserIdAndName(UUID userId, String name) {
         return plannerRepository.findByUserIdAndName(userId, name)
                 .stream()
                 .findFirst() // 첫 번째 결과만 꺼냄
