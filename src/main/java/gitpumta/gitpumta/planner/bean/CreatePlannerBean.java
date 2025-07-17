@@ -18,7 +18,7 @@ public class CreatePlannerBean {
     public PlannerDAO exec(CreatePlannerRequestDTO createPlannerRequestDTO) {
         PlannerDAO planner = PlannerDAO.builder()
                 .id(UUID.randomUUID())
-                .userId(UUID.randomUUID())
+                .userId(createPlannerRequestDTO.getUser_id())
                 .name(createPlannerRequestDTO.getName())
                 .description(createPlannerRequestDTO.getDescription())
                 .repository_link(createPlannerRequestDTO.getRepository_link())
