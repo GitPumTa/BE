@@ -15,4 +15,5 @@ public class PlannerResponseDTO {
     private String description;
     private String name;
     private String repository_link;
+    private int duration;
 }
