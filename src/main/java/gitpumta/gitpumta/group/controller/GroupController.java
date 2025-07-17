@@ -182,4 +182,18 @@ public class GroupController {
 
         return ResponseEntity.ok(response);
     }
+
+    // 그룹 DROP
+    @PostMapping("/drop")
+    public ResponseEntity<Map<String, Object>> deleteGroup(@RequestBody DeleteGroupRequestDTO dto) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Map<String, Object> result = groupService.deleteGroup(dto.getGroupId(), dto.getRequesterId());
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            response.put("message", "그룹 삭제 실패");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 }
