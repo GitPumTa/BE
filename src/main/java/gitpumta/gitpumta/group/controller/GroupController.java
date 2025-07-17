@@ -148,4 +148,21 @@ public class GroupController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
+    // 사용자가 그룹에서 본인의 정보 (그룹장/일반 맴버 여부) 조회
+    @GetMapping("/mem_status")
+    public ResponseEntity<Map<String, Object>> getMemberStatus(@RequestParam UUID groupId,
+                                                               @RequestParam UUID userId) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            GroupMemberRoleDTO status = groupService.getGroupMemberStatus(groupId, userId);
+            response.put("message", "맴버 등급 조회 성공");
+            response.put("data", status);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "맴버 등급 조회 실패");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 }
