@@ -20,8 +20,11 @@ public class ProfileinfoBean {
         this.userDAORepository = userDAORepository;
     }
 
+    // getUser 유저 찾기
     public UserDAO getUserById(UUID user_id) {
         return userDAORepository.findByIdAndDeletedAtIsNull(user_id)
+
+
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자"));
     }
 }
