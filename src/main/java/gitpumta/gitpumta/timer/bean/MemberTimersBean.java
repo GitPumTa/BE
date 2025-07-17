@@ -2,6 +2,7 @@ package gitpumta.gitpumta.timer.bean;
 
 import gitpumta.gitpumta.commit.repository.CommitDAORepository;
 import gitpumta.gitpumta.group.domain.GroupDAO;
+import gitpumta.gitpumta.group.domain.GroupMemberDAO;
 import gitpumta.gitpumta.group.repository.GroupDAORepository;
 import gitpumta.gitpumta.group.repository.GroupMemberDAORepository;
 import gitpumta.gitpumta.planner.domain.PlannerDAO;
@@ -59,7 +60,7 @@ public class MemberTimersBean {
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
                 .stream()
-                .map(member -> member.getUserId())
+                .map(GroupMemberDAO::getUserId)
                 .toList();
 
         // 해당 userId 리스트에 대해 TimerDAO에서 totalDuration 내림차순 정렬
@@ -92,7 +93,7 @@ public class MemberTimersBean {
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
                 .stream()
-                .map(member -> member.getUserId())
+                .map(GroupMemberDAO::getUserId)
                 .toList();
 
         // 해당 userId 리스트에 대해 TimerDAO에서 totalDuration 내림차순 정렬
@@ -128,7 +129,7 @@ public class MemberTimersBean {
         List<UUID> userIds = groupMemberDAORepository
                 .findAllByGroupIdAndDeletedAtIsNull(groupId)
                 .stream()
-                .map(member -> member.getUserId())
+                .map(GroupMemberDAO::getUserId)
                 .toList();
 
         // 유저 별 모든 플래너 -> 플래너에 연결된 커밋 검색(그중에서 오늘자)
