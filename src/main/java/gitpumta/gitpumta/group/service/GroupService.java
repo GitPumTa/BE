@@ -14,12 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 // 그룹 조회 목록 기능 import
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
-import java.util.Optional;
 
 @Service
 public class GroupService {
@@ -184,9 +182,61 @@ public class GroupService {
         groupRepository.save(group);
     }
 
+    // 그룹에 가입된 맴버 조회
     public List<GroupMemberSimpleDTO> getGroupMembers(UUID groupId) {
         return getGroupMembersBean.exec(groupId).stream()
                 .map(GroupMemberSimpleDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    // 그룹장이 맴버 강제 추방
+    public Map<String, Object> expelMember(UUID groupId, UUID requesterId, UUID targetUserId) {
+        // 그룹 조회
+        GroupDAO group = groupRepository.findByIdAndDeletedAtIsNull(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹"));
+
+        // 그룹 생성자 여부 확인
+        Optional<GroupMemberDAO> firstMemberOpt = groupMemberDAORepository
+                .findFirstByGroupIdAndDeletedAtIsNullOrderByJoinedAtAsc(groupId);
+
+        boolean isLeader = firstMemberOpt
+                .map(member -> member.getUserId().equals(requesterId))
+                .orElse(false);
+
+
+        if (requesterId.equals(targetUserId)) {
+            throw new IllegalArgumentException("자기 자신을 추방할 수 없음");
+        }
+
+        if (!isLeader) {
+            throw new IllegalArgumentException("강제 추방 기능은 그룹장만 사용 가능");
+        }
+
+        // 대상 유저가 멤버인지 확인
+        GroupMemberDAO target = groupMemberDAORepository.findByGroupIdAndUserIdAndDeletedAtIsNull(groupId, targetUserId)
+                .orElseThrow(() -> new IllegalArgumentException("이 유저는 그룹의 맴버가 아님"));
+
+        target.setDeletedAt(LocalDateTime.now());
+        groupMemberDAORepository.save(target);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "멤버 추방 완료");
+        response.put("expelledUserId", targetUserId);
+        return response;
+    }
+
+    // 맴버 스스로 그룹 탈퇴
+    public Map<String, Object> leaveGroup(UUID groupId, UUID userId) {
+        GroupMemberDAO member = groupMemberDAORepository.findByGroupIdAndUserIdAndDeletedAtIsNull(groupId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저는 그룹에 속해 있지 않습니다."));
+
+        member.setDeletedAt(LocalDateTime.now());
+        groupMemberDAORepository.save(member);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("message", "그룹 탈퇴 완료");
+        result.put("leftUserId", userId);
+        result.put("groupId", groupId);
+        return result;
     }
 }
