@@ -68,7 +68,7 @@ public class MemberTimersBean {
         int myRank = 1;
 
         // 정렬된 리스트에서 해당 유저 랭킹 찾기
-        for (int i = 0; i < timers.size(); i++) {
+        for (int i = 1; i < timers.size(); i++) {
             if (timers.get(i).getUserId().equals(accountId)) {
                 myRank = i;
             }
